@@ -10,10 +10,32 @@ final public class SDL {
 
     */
 
+    public static class SDL_Joystick{
+        long ptr;
+        SDL_Joystick(long ptr){
+            this.ptr=ptr;
+        }
+    }
+
     static {
         new JniGenSharedLibraryLoader().load("jamepad");
     }
 
+    public static native int SDL_NumJoysticks(); /*
+        return SDL_NumJoysticks();
+    */
+
+     public static native String SDL_JoystickNameForIndex(int i); /*
+        return env->NewStringUTF(SDL_JoystickNameForIndex(i));
+    */
+
+    public static SDL_Joystick SDL_JoystickOpen(int i){
+        return new SDL_Joystick(_SDL_JoystickOpen(i));
+    }
+
+    public static native long _SDL_JoystickOpen(int i); /*
+        return (long)SDL_JoystickOpen(i);
+    */
 
 
     public static native int SDL_Init(int flags); /*

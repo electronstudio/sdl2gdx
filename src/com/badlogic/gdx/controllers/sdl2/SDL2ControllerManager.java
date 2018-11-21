@@ -40,6 +40,28 @@ public class SDL2ControllerManager implements ControllerManager {
 		}
 		sdl.init();
 
+		for(int i = 0; i < SDL.SDL_NumJoysticks(); i++){
+			String name = SDL.SDL_JoystickNameForIndex(i);
+			System.out.printf("Joystick %d: %s\n", i, name!=null ? name : "Unknown Joystick");
+			SDL.SDL_Joystick joystick = SDL.SDL_JoystickOpen(i);
+			if (joystick == null) {
+				System.out.printf("SDL_JoystickOpen(%d) failed: %s\n", i, SDL.SDL_GetError());
+			}
+//            else {
+//                char guid[64];
+//                SDL_assert(SDL_JoystickFromInstanceID(SDL_JoystickInstanceID(joystick)) == joystick);
+//                SDL_JoystickGetGUIDString(SDL_JoystickGetGUID(joystick),
+//                                          guid, sizeof (guid));
+//                SDL_Log("       axes: %d\n", SDL_JoystickNumAxes(joystick));
+//                SDL_Log("      balls: %d\n", SDL_JoystickNumBalls(joystick));
+//                SDL_Log("       hats: %d\n", SDL_JoystickNumHats(joystick));
+//                SDL_Log("    buttons: %d\n", SDL_JoystickNumButtons(joystick));
+//                SDL_Log("instance id: %d\n", SDL_JoystickInstanceID(joystick));
+//                SDL_Log("       guid: %s\n", guid);
+//                SDL_Log("    VID/PID: 0x%.4x/0x%.4x\n", SDL_JoystickGetVendor(joystick), SDL_JoystickGetProduct(joystick));
+//             }
+		}
+
 //		Gdx.app.postRunnable(new Runnable() {
 //			@Override
 //			public void run () {
@@ -52,7 +74,8 @@ public class SDL2ControllerManager implements ControllerManager {
 
 
 	public void pollState() {
-		sdl.update();
+	//	sdl.update();
+
 //		for(int i = GLFW.GLFW_JOYSTICK_1; i < GLFW.GLFW_JOYSTICK_LAST; i++) {
 //			if(GLFW.glfwJoystickPresent(i)) {
 //				boolean alreadyUsed = false;
