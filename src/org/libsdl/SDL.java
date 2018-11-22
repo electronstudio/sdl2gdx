@@ -10,33 +10,104 @@ final public class SDL {
 
     */
 
-    public static class SDL_Joystick{
-        long ptr;
-        SDL_Joystick(long ptr){
-            this.ptr=ptr;
-        }
-    }
-
     static {
         new JniGenSharedLibraryLoader().load("jamepad");
     }
+
+    // joystick.h
+
+    public static native void SDL_JoystickClose(long ptr);/*
+        SDL_JoystickClose((SDL_Joystick *) ptr);
+    */
+
+    // TODO
+    //  public static native SDL_JoystickCurrentPowerLevel
+
+    public static native int SDL_JoystickEventState(int state); /*
+        return SDL_JoystickEventState(state);
+    */
+
+    public static native long SDL_JoystickFromInstanceID(int joyid); /*
+        return (long)SDL_JoystickFromInstanceID(joyid);
+    */
+
+    public static native boolean SDL_JoystickGetAttached(long ptr);/*
+        return (SDL_JoystickGetAttached((SDL_Joystick*) ptr)==SDL_TRUE);
+    */
+
+    public static native int SDL_JoystickGetAxis(long ptr, int axis); /*
+        return SDL_JoystickGetAxis((SDL_Joystick*) ptr, axis);
+    */
+
+    // TODO
+//    public static native int SDL_JoystickGetBall(long ptr, int ball); /*
+//        int* dx;
+//        int* dy;
+//        SDL_JoystickGetBall((SDL_Joystick*) ptr, ball, dx, dy);
+//        return SDL_JoystickGetAxis((SDL_Joystick*) ptr, axis);
+//    */
+
+    public static native int SDL_JoystickGetButton(long ptr, int button); /*
+        return SDL_JoystickGetButton((SDL_Joystick*) ptr, button);
+    */
+
+    // TODO
+    //SDL_JoystickGetDeviceGUID
+    //TODO
+    //SDL_JoystickGetGUID
+    //TODO
+    //SDL_JoystickGetGUIDFromString
+    //TODO
+    //SDL_JoystickGetGUIDString
+
+    public static native int SDL_JoystickGetHat(long ptr, int hat); /*
+        return SDL_JoystickGetHat((SDL_Joystick*) ptr, hat);
+    */
+
+    public static native int SDL_JoystickInstanceID(long ptr); /*
+        return SDL_JoystickInstanceID((SDL_Joystick*) ptr);
+    */
+
+    public static native String SDL_JoystickName(long ptr); /*
+        return  env->NewStringUTF(SDL_JoystickName((SDL_Joystick*) ptr));
+    */
+
+    public static native String SDL_JoystickNameForIndex(int i); /*
+        return env->NewStringUTF(SDL_JoystickNameForIndex(i));
+    */
+
+    public static native int SDL_JoystickNumAxes(long ptr); /*
+        return SDL_JoystickNumAxes((SDL_Joystick*) ptr);
+    */
+
+    public static native int SDL_JoystickNumBalls(long ptr); /*
+        return SDL_JoystickNumBalls((SDL_Joystick*) ptr);
+    */
+
+    public static native int SDL_JoystickNumButtons(long ptr); /*
+        return SDL_JoystickNumButtons((SDL_Joystick*) ptr);
+    */
+
+
+    public static native int SDL_JoystickNumHats(long ptr); /*
+        return SDL_JoystickNumHats((SDL_Joystick*) ptr);
+    */
+
+
+    public static native long SDL_JoystickOpen(int i); /*
+        return (long)SDL_JoystickOpen(i);
+    */
+
+    public static native void  SDL_JoystickUpdate();/*
+         SDL_JoystickUpdate();
+    */
 
     public static native int SDL_NumJoysticks(); /*
         return SDL_NumJoysticks();
     */
 
-     public static native String SDL_JoystickNameForIndex(int i); /*
-        return env->NewStringUTF(SDL_JoystickNameForIndex(i));
-    */
 
-    public static SDL_Joystick SDL_JoystickOpen(int i){
-        return new SDL_Joystick(_SDL_JoystickOpen(i));
-    }
-
-    public static native long _SDL_JoystickOpen(int i); /*
-        return (long)SDL_JoystickOpen(i);
-    */
-
+    ///// SDL.h
 
     public static native int SDL_Init(int flags); /*
         return SDL_Init(flags);
@@ -48,9 +119,7 @@ final public class SDL {
        SDL_SetHint(SDL_HINT_MAC_BACKGROUND_APP, "1");
     */
 
-    public static native void  SDL_JoystickUpdate();/*
-         SDL_JoystickUpdate();
-    */
+
     public static native void SDL_GameControllerUpdate();/*
         SDL_GameControllerUpdate();
     */
@@ -107,6 +176,8 @@ final public class SDL {
     public static native String SDL_GetError(); /*
         return env->NewStringUTF(SDL_GetError());
     */
+
+
 
 //    public static native int SDL_PollEvent(); /*
 //        return SDL_PollEvent(SDL_Event* event)

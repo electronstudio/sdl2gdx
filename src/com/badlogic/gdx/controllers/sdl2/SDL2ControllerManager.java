@@ -6,6 +6,7 @@ import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.ControllerManager;
 import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.utils.Array;
+import org.libsdl.Joystick;
 import org.libsdl.SDL;
 
 import java.io.IOException;
@@ -43,7 +44,7 @@ public class SDL2ControllerManager implements ControllerManager {
 		for(int i = 0; i < SDL.SDL_NumJoysticks(); i++){
 			String name = SDL.SDL_JoystickNameForIndex(i);
 			System.out.printf("Joystick %d: %s\n", i, name!=null ? name : "Unknown Joystick");
-			SDL.SDL_Joystick joystick = SDL.SDL_JoystickOpen(i);
+			Joystick.SDL_Joystick joystick = Joystick.JoystickOpen(i);
 			if (joystick == null) {
 				System.out.printf("SDL_JoystickOpen(%d) failed: %s\n", i, SDL.SDL_GetError());
 			}
