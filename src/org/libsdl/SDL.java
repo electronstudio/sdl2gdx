@@ -178,7 +178,11 @@ final public class SDL {
     // TODO //SDL_GameControllerAddMappingsFromRW
 
     public static native int SDL_GameControllerAddMappingsFromFile(String path); /*
-        return SDL_GameControllerAddMappingsFromFile(path);
+
+     printf("NATIVE METHOD: loading from  \"%s\"\n", path);
+     int result = SDL_GameControllerAddMappingsFromFile(path);
+     printf("             result %d  %s\n", result, SDL_GetError());
+        return result;
     */
 
     public static native void SDL_GameControllerClose(long ptr);/*
@@ -319,6 +323,20 @@ final public class SDL {
     public static native String SDL_GetError(); /*
         return env->NewStringUTF(SDL_GetError());
     */
+
+
+    public static native void SDL_PumpEvents(); /*
+        SDL_PumpEvents();
+    */
+
+    public static native int SDL_JOYSTICK_AXIS_MIN(); /*
+        return SDL_JOYSTICK_AXIS_MIN;
+    */
+
+    public static native int SDL_JOYSTICK_AXIS_MAX(); /*
+        return SDL_JOYSTICK_AXIS_MAX;
+    */
+
 
 
 //    public static native int SDL_PollEvent(); /*

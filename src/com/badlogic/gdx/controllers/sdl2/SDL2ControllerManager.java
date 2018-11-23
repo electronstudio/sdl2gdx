@@ -19,7 +19,6 @@ public class SDL2ControllerManager implements ControllerManager {
 	//final Array<SDL_JoystickID> connectedInstanceIDs = new Array<>();
 	final Array<ControllerListener> listeners = new Array<ControllerListener>();
 
-
 	
 	public SDL2ControllerManager() {
 //		for(int i = GLFW.GLFW_JOYSTICK_1; i < GLFW.GLFW_JOYSTICK_LAST; i++) {
@@ -31,26 +30,25 @@ public class SDL2ControllerManager implements ControllerManager {
 		SDL.SDL_SetHints();
 
 
-		if(SDL.SDL_Init( SDL.SDL_INIT_JOYSTICK | SDL.SDL_INIT_GAMECONTROLLER )!=0){
+		if(SDL.SDL_Init( SDL.SDL_INIT_EVENTS | SDL.SDL_INIT_JOYSTICK | SDL.SDL_INIT_GAMECONTROLLER )!=0){
 			throw new RuntimeException("SDL_Init failed: "+SDL.SDL_GetError());
 		}
 
+
 		try {
 			SDL_GameController.addMappingsFromFile("gamecontrollerdb.txt");
-		}catch (IOException e){
+		}catch (Exception e){
 			System.out.println("Failed to load gamecontrollerdb.txt");
 			e.printStackTrace();
 		}
 
-
+		try {
 		for(int i = 0; i < SDL_Joystick.numJoysticks(); i++){
 			String name = SDL_Joystick.joystickNameForIndex(i);
 			System.out.printf("Joystick %d: %s\n", i, name!=null ? name : "Unknown Joystick");
-			try {
+
 				controllers.add(new SDL2Controller(this, i));
-			}catch (SDL_Error e){
-				e.printStackTrace();
-			}
+
 //                char guid[64];
 //                SDL_assert(SDL_JoystickFromInstanceID(SDL_JoystickInstanceID(joystick)) == joystick);
 //                SDL_JoystickGetGUIDString(SDL_JoystickGetGUID(joystick),
@@ -64,20 +62,30 @@ public class SDL2ControllerManager implements ControllerManager {
 //                SDL_Log("    VID/PID: 0x%.4x/0x%.4x\n", SDL_JoystickGetVendor(joystick), SDL_JoystickGetProduct(joystick));
 //             }
 		}
+		}catch (SDL_Error e){
+			e.printStackTrace();
+		}
 
-		Gdx.app.postRunnable(new Runnable() {
-			@Override
-			public void run () {
-				pollState();
-				Gdx.app.postRunnable(this);
-			}
-		});
+		if(Gdx.app!=null) {
+			Gdx.app.postRunnable(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						pollState();
+					} catch (SDL_Error e) {
+						e.printStackTrace();
+					}
+					Gdx.app.postRunnable(this);
+				}
+			});
+		}
 	}
 
 
 
-	public void pollState() {
-		SDL.SDL_JoystickUpdate();
+	public void pollState() throws SDL_Error{
+		SDL.SDL_PumpEvents();
+	//	SDL.SDL_JoystickUpdate();
 	//	sdl.update();
 
 		for(int i = 0; i < SDL_Joystick.numJoysticks(); i++){

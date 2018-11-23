@@ -9,8 +9,13 @@ import java.util.Objects;
 
 public final class SDL_GameController {
     final long ptr;
+
+    final float AXIS_MIN, AXIS_MAX;
+
     SDL_GameController(long ptr){
         this.ptr=ptr;
+        AXIS_MAX=SDL.SDL_JOYSTICK_AXIS_MAX();
+        AXIS_MIN=SDL.SDL_JOYSTICK_AXIS_MIN();
     }
 
     public void close(){
@@ -23,8 +28,8 @@ public final class SDL_GameController {
 
     public float getAxis(int axis){
         int i = SDL.SDL_GameControllerGetAxis(ptr, axis);
-        if(i<0) return i/32768f; // FIXME must be a nicer way of doing this
-        return i/32767;
+        if(i<0) return i/-AXIS_MIN;
+        return i/AXIS_MAX;
     }
 
 // TODO
@@ -66,7 +71,7 @@ public final class SDL_GameController {
      * @throws IOException if the file cannot be read, copied to a temp folder, or deleted.
      * @throws IllegalStateException if the mappings cannot be applied to SDL
      */
-    public static boolean addMappingsFromFile(String path) throws IOException, IllegalStateException {
+    public static boolean addMappingsFromFile(String path) throws IOException, IllegalStateException, SDL_Error {
         /*
         Copy the file to a temp folder. SDL can't read files held in .jars, and that's probably how
         most people would use this library.
@@ -74,6 +79,8 @@ public final class SDL_GameController {
         Path extractedLoc = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir"), path);
         Files.copy(ClassLoader.getSystemResourceAsStream(path), extractedLoc,
                 StandardCopyOption.REPLACE_EXISTING);
+
+        System.out.println("EXTRACTED LOC "+extractedLoc.toString());
 
         int result = SDL.SDL_GameControllerAddMappingsFromFile(extractedLoc.toString());
 
@@ -103,15 +110,10 @@ public final class SDL_GameController {
         return intToBoolean(SDL.SDL_GameControllerEventState(i));
     }
 
-    private static boolean intToBoolean(int i){
-        switch (i) {
-            case 1:
-                return true;
-            case 0:
-                return false;
-            default:
-                throw new SDL_Error();
-        }
+    private static boolean intToBoolean(int i) throws SDL_Error{
+        if(i>0) return true;
+        else if(i==0) return false;
+        else throw new SDL_Error();
     }
 
 

@@ -25,26 +25,33 @@ public class SDL2Controller implements Controller {
 	final static Vector3 zero = new Vector3(0, 0, 0);
 //	final String name = "";
 
-	public SDL2Controller(SDL2ControllerManager manager, int device_index){
+	public SDL2Controller(SDL2ControllerManager manager, int device_index) throws SDL_Error{
 		this.manager = manager;
-		joystick = SDL_Joystick.JoystickOpen(device_index);
-		if(joystick==null) throw new SDL_Error();
-		controller = SDL_GameController.GameControllerOpen(device_index);
+
+		if(SDL.SDL_IsGameController(device_index)) {
+			controller = SDL_GameController.GameControllerOpen(device_index);
+			joystick = null;
+		}else{
+			controller = null;
+			joystick = SDL_Joystick.JoystickOpen(device_index);
+		}
+		System.out.println("joystick "+joystick+" controller "+controller);
+		if(joystick==null && controller==null) throw new SDL_Error();
 	}
 
-	public SDL2Controller(SDL2ControllerManager manager, SDL_Joystick joystick) {
-		this(manager, joystick, null);
-	}
-
-	public SDL2Controller(SDL2ControllerManager manager, SDL_Joystick joystick, SDL_GameController controller) {
-		this.manager = manager;
-		this.joystick = joystick;
-		this.controller = controller;
-//		this.axisState = new float[GLFW.glfwGetJoystickAxes(index).limit()];
-//		this.buttonState = new boolean[GLFW.glfwGetJoystickButtons(index).limit()];
-//		this.hatState = new byte[GLFW.glfwGetJoystickHats(index).limit()];
-//		this.name = GLFW.glfwGetJoystickName(index);
-	}
+//	public SDL2Controller(SDL2ControllerManager manager, SDL_Joystick joystick) {
+//		this(manager, joystick, null);
+//	}
+//
+//	public SDL2Controller(SDL2ControllerManager manager, SDL_Joystick joystick, SDL_GameController controller) {
+//		this.manager = manager;
+//		this.joystick = joystick;
+//		this.controller = controller;
+////		this.axisState = new float[GLFW.glfwGetJoystickAxes(index).limit()];
+////		this.buttonState = new boolean[GLFW.glfwGetJoystickButtons(index).limit()];
+////		this.hatState = new byte[GLFW.glfwGetJoystickHats(index).limit()];
+////		this.name = GLFW.glfwGetJoystickName(index);
+//	}
 	
 	void pollState() {
 //		if(!GLFW.glfwJoystickPresent(index)) {
@@ -134,6 +141,7 @@ public class SDL2Controller implements Controller {
 
 	@Override
 	public PovDirection getPov (int povCode) {
+		if(joystick!=null){
 		switch (joystick.getHat(povCode)) {
 			case SDL_HAT_UP:
 				return PovDirection.north;
@@ -153,7 +161,8 @@ public class SDL2Controller implements Controller {
 				return PovDirection.southWest;
 			default:
 				return PovDirection.center;
-		}
+		}}
+		return PovDirection.center;
 	}
 
 	@Override

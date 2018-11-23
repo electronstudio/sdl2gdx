@@ -28,8 +28,11 @@ import java.util.Objects;
 
 public final class SDL_Joystick {
     final long ptr;
+    final float AXIS_MIN, AXIS_MAX;
     SDL_Joystick(long ptr){
         this.ptr=ptr;
+        AXIS_MAX=SDL.SDL_JOYSTICK_AXIS_MAX();
+        AXIS_MIN=SDL.SDL_JOYSTICK_AXIS_MIN();
     }
 
     public static boolean eventStateQuery() throws SDL_Error{
@@ -91,8 +94,8 @@ public final class SDL_Joystick {
 
     public float getAxis(int axis){
         int i = SDL.SDL_JoystickGetAxis(ptr, axis);
-        if(i<0) return i/32768f; // FIXME must be a nicer way of doing this
-        return i/32767;
+        if(i<0) return i/-AXIS_MIN;
+        return i/AXIS_MAX;
     }
 
 // TODO
