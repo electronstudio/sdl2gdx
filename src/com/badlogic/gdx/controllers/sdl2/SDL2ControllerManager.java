@@ -1,23 +1,25 @@
 package com.badlogic.gdx.controllers.sdl2;
 
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.ControllerManager;
 import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.utils.Array;
-import org.libsdl.Joystick;
-import org.libsdl.SDL;
+import org.libsdl.*;
 
 import java.io.IOException;
 
 public class SDL2ControllerManager implements ControllerManager {
 
-	final Array<Controller> controllers = new Array<Controller>();
-	final Array<Controller> polledControllers = new Array<Controller>();
+	final Array<Controller> controllers = new Array<>();
+	final Array<Controller> polledControllers = new Array<>();
+	final Array<Controller> disconnectedControllers = new Array<>();
+	//final Array<SDL_JoystickID> connectedInstanceIDs = new Array<>();
 	final Array<ControllerListener> listeners = new Array<ControllerListener>();
 
-	final NativeUtil sdl = new NativeUtil();
+
 	
 	public SDL2ControllerManager() {
 //		for(int i = GLFW.GLFW_JOYSTICK_1; i < GLFW.GLFW_JOYSTICK_LAST; i++) {
@@ -34,21 +36,21 @@ public class SDL2ControllerManager implements ControllerManager {
 		}
 
 		try {
-			sdl.addMappingsFromFile("gamecontrollerdb.txt");
+			SDL_GameController.addMappingsFromFile("gamecontrollerdb.txt");
 		}catch (IOException e){
 			System.out.println("Failed to load gamecontrollerdb.txt");
 			e.printStackTrace();
 		}
-		sdl.init();
 
-		for(int i = 0; i < SDL.SDL_NumJoysticks(); i++){
-			String name = SDL.SDL_JoystickNameForIndex(i);
+
+		for(int i = 0; i < SDL_Joystick.numJoysticks(); i++){
+			String name = SDL_Joystick.joystickNameForIndex(i);
 			System.out.printf("Joystick %d: %s\n", i, name!=null ? name : "Unknown Joystick");
-			Joystick.SDL_Joystick joystick = Joystick.JoystickOpen(i);
-			if (joystick == null) {
-				System.out.printf("SDL_JoystickOpen(%d) failed: %s\n", i, SDL.SDL_GetError());
+			try {
+				controllers.add(new SDL2Controller(this, i));
+			}catch (SDL_Error e){
+				e.printStackTrace();
 			}
-//            else {
 //                char guid[64];
 //                SDL_assert(SDL_JoystickFromInstanceID(SDL_JoystickInstanceID(joystick)) == joystick);
 //                SDL_JoystickGetGUIDString(SDL_JoystickGetGUID(joystick),
@@ -63,19 +65,25 @@ public class SDL2ControllerManager implements ControllerManager {
 //             }
 		}
 
-//		Gdx.app.postRunnable(new Runnable() {
-//			@Override
-//			public void run () {
-//				pollState();
-//				Gdx.app.postRunnable(this);
-//			}
-//		});
+		Gdx.app.postRunnable(new Runnable() {
+			@Override
+			public void run () {
+				pollState();
+				Gdx.app.postRunnable(this);
+			}
+		});
 	}
 
 
 
 	public void pollState() {
+		SDL.SDL_JoystickUpdate();
 	//	sdl.update();
+
+		for(int i = 0; i < SDL_Joystick.numJoysticks(); i++){
+//			SDL_Joystick = SDL_Joystick.
+//			SDL_JoystickID id =
+		}
 
 //		for(int i = GLFW.GLFW_JOYSTICK_1; i < GLFW.GLFW_JOYSTICK_LAST; i++) {
 //			if(GLFW.glfwJoystickPresent(i)) {

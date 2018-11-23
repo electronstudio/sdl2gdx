@@ -6,20 +6,40 @@ import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
+import org.libsdl.SDL;
+import org.libsdl.SDL_Error;
+import org.libsdl.SDL_GameController;
+import org.libsdl.SDL_Joystick;
+
+import static org.libsdl.SDL.*;
 
 public class SDL2Controller implements Controller {
 	final SDL2ControllerManager manager;
 	final Array<ControllerListener> listeners = new Array<ControllerListener>();
-	final int index;
-	final float[] axisState = new float[1];
-	final boolean[] buttonState = new boolean[1];
-	final byte[] hatState = new byte[1];
-	final Vector3 zero = new Vector3(0, 0, 0);
-	final String name = "";
-	
-	public SDL2Controller(SDL2ControllerManager manager, int index) {
+	//final int index;
+	final SDL_Joystick joystick;
+	final SDL_GameController controller;
+//	final float[] axisState = new float[1];
+//	final boolean[] buttonState = new boolean[1];
+//	final byte[] hatState = new byte[1];
+	final static Vector3 zero = new Vector3(0, 0, 0);
+//	final String name = "";
+
+	public SDL2Controller(SDL2ControllerManager manager, int device_index){
 		this.manager = manager;
-		this.index = index;
+		joystick = SDL_Joystick.JoystickOpen(device_index);
+		if(joystick==null) throw new SDL_Error();
+		controller = SDL_GameController.GameControllerOpen(device_index);
+	}
+
+	public SDL2Controller(SDL2ControllerManager manager, SDL_Joystick joystick) {
+		this(manager, joystick, null);
+	}
+
+	public SDL2Controller(SDL2ControllerManager manager, SDL_Joystick joystick, SDL_GameController controller) {
+		this.manager = manager;
+		this.joystick = joystick;
+		this.controller = controller;
 //		this.axisState = new float[GLFW.glfwGetJoystickAxes(index).limit()];
 //		this.buttonState = new boolean[GLFW.glfwGetJoystickButtons(index).limit()];
 //		this.hatState = new byte[GLFW.glfwGetJoystickHats(index).limit()];
@@ -96,43 +116,44 @@ public class SDL2Controller implements Controller {
 	
 	@Override
 	public boolean getButton (int buttonCode) {
-		if(buttonCode < 0 || buttonCode >= buttonState.length) {
-			return false;
+		if(controller!=null){
+			return controller.getButton(buttonCode);
+		}else {
+			return joystick.getButton(buttonCode);
 		}
-		return buttonState[buttonCode];
 	}
 
 	@Override
 	public float getAxis (int axisCode) {
-		if(axisCode < 0 || axisCode >= axisState.length) {
-			return 0;
+		if(controller!=null){
+			return controller.getAxis(axisCode);
+		}else {
+			return joystick.getAxis(axisCode);
 		}
-		return axisState[axisCode];
 	}
 
 	@Override
 	public PovDirection getPov (int povCode) {
-//		if (povCode < 0 || povCode >= hatState.length) return PovDirection.center;
-//		switch (hatState[povCode]) {
-//			case GLFW.GLFW_HAT_UP:
-//				return PovDirection.north;
-//			case GLFW.GLFW_HAT_DOWN:
-//				return PovDirection.south;
-//			case GLFW.GLFW_HAT_RIGHT:
-//				return PovDirection.east;
-//			case GLFW.GLFW_HAT_LEFT:
-//				return PovDirection.west;
-//			case GLFW.GLFW_HAT_RIGHT_UP:
-//				return PovDirection.northEast;
-//			case GLFW.GLFW_HAT_RIGHT_DOWN:
-//				return PovDirection.southEast;
-//			case GLFW.GLFW_HAT_LEFT_UP:
-//				return PovDirection.northWest;
-//			case GLFW.GLFW_HAT_LEFT_DOWN:
-//				return PovDirection.southWest;
-//			default:
+		switch (joystick.getHat(povCode)) {
+			case SDL_HAT_UP:
+				return PovDirection.north;
+			case SDL_HAT_DOWN:
+				return PovDirection.south;
+			case SDL_HAT_RIGHT:
+				return PovDirection.east;
+			case SDL_HAT_LEFT:
+				return PovDirection.west;
+			case SDL_HAT_RIGHTUP:
+				return PovDirection.northEast;
+			case SDL_HAT_RIGHTDOWN:
+				return PovDirection.southEast;
+			case SDL_HAT_LEFTUP:
+				return PovDirection.northWest;
+			case SDL_HAT_LEFTDOWN:
+				return PovDirection.southWest;
+			default:
 				return PovDirection.center;
-//		}
+		}
 	}
 
 	@Override
@@ -156,6 +177,10 @@ public class SDL2Controller implements Controller {
 
 	@Override
 	public String getName () {
-		return name;
+		if(controller!=null){
+			return "SDL GameController "+controller.name();
+		}else {
+			return "SDL Joystick " + joystick.name();
+		}
 	}	
 }
