@@ -147,9 +147,6 @@ public final class SDL_GameController {
 
 
 
-
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -180,6 +180,31 @@ public final class SDL_Joystick {
   // }
 
 
+    /**
+     * Vibrate the controller using the new rumble API
+     * This will return false if the controller doesn't support vibration or if SDL was unable to start
+     * vibration (maybe the controller doesn't support left/right vibration, maybe it was unplugged in the
+     * middle of trying, etc...)
+     *
+     * @param leftMagnitude The speed for the left motor to vibrate (this should be between 0 and 1)
+     * @param rightMagnitude The speed for the right motor to vibrate (this should be between 0 and 1)
+     * @return Whether or not the controller was able to be vibrated (i.e. if rumble is supported)
+     */
+    public boolean rumble(float leftMagnitude, float rightMagnitude, int duration_ms)  {
+
+
+        //Check the values are appropriate
+        boolean leftInRange = leftMagnitude >= 0 && leftMagnitude <= 1;
+        boolean rightInRange = rightMagnitude >= 0 && rightMagnitude <= 1;
+        if(!(leftInRange && rightInRange)) {
+            throw new IllegalArgumentException("The passed values are not in the range 0 to 1!");
+        }
+        //65535
+                // 32767
+        return SDL.SDL_JoystickRumble(ptr, (int) (65535 * leftMagnitude), (int) (65535 * rightMagnitude), duration_ms);
+    }
+
+
 
 
 

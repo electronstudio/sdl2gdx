@@ -114,6 +114,19 @@ final public class SDL {
         return SDL_JoystickGetDeviceProductVersion(device_id);
      */
 
+    public static native boolean SDL_JoystickRumble(long ptr, int leftMagnitude, int rightMagnitude, int duration_ms); /*
+        return SDL_JoystickRumble((SDL_Joystick *)ptr, leftMagnitude, rightMagnitude,  duration_ms) == 0;
+    */
+
+    public static native String SDL_GameControllerGetStringForAxis(int axis); /*
+        return  env->NewStringUTF(SDL_GameControllerGetStringForAxis((SDL_GameControllerAxis)axis));
+    */
+
+    public static native String SDL_GameControllerGetStringForButton(int button); /*
+        return  env->NewStringUTF(SDL_GameControllerGetStringForButton((SDL_GameControllerButton)button));
+    */
+
+
     // GameController.h
 
     public static final int SDL_CONTROLLER_BINDTYPE_NONE = 0,

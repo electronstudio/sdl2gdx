@@ -6,6 +6,7 @@ import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
+import com.studiohartman.jamepad.ControllerUnpluggedException;
 import org.libsdl.SDL;
 import org.libsdl.SDL_Error;
 import org.libsdl.SDL_GameController;
@@ -19,7 +20,7 @@ public class SDL2Controller implements Controller {
 	final SDL2ControllerManager manager;
 	final Array<ControllerListener> listeners = new Array<ControllerListener>();
 	final int device_index;
-	final SDL_Joystick joystick;
+	public final SDL_Joystick joystick;
 	final SDL_GameController controller;
 	final float[] axisState;
 	final boolean[] buttonState;
@@ -226,4 +227,19 @@ public class SDL2Controller implements Controller {
 		joystick.close();
 		if(controller!=null) controller.close();
 	}
+
+	/**
+	 * Vibrate the controller using the new rumble API
+	 * This will return false if the controller doesn't support vibration or if SDL was unable to start
+	 * vibration (maybe the controller doesn't support left/right vibration, maybe it was unplugged in the
+	 * middle of trying, etc...)
+	 *
+	 * @param leftMagnitude The speed for the left motor to vibrate (this should be between 0 and 1)
+	 * @param rightMagnitude The speed for the right motor to vibrate (this should be between 0 and 1)
+	 * @return Whether or not the controller was able to be vibrated (i.e. if rumble is supported)
+	 */
+	public boolean rumble(float leftMagnitude, float rightMagnitude, int duration_ms)  {
+		return joystick.rumble(leftMagnitude, rightMagnitude, duration_ms);
+	}
+
 }

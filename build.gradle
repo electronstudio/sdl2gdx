@@ -80,7 +80,7 @@ task distTester(dependsOn: classes, type: Jar) {
     from {configurations.compile.collect {zipTree(it)}}
 
     manifest {
-        attributes 'Main-Class': 'com.studiohartman.jamepad.tester.ControllerTester'
+        attributes 'Main-Class': 'com.badlogic.gdx.controllers.sdl2.tests.SDLTest'
     }
 }
 
