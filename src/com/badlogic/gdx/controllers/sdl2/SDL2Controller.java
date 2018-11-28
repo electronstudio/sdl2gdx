@@ -13,23 +13,29 @@ import org.libsdl.SDL_Joystick;
 
 import static org.libsdl.SDL.*;
 
+// TODO implement native SDL events.  Tried but they don't seem to work reliably on MacOS!
+
 public class SDL2Controller implements Controller {
 	final SDL2ControllerManager manager;
 	final Array<ControllerListener> listeners = new Array<ControllerListener>();
 	final int device_index;
 	final SDL_Joystick joystick;
 	final SDL_GameController controller;
-//	final float[] axisState = new float[1];
-//	final boolean[] buttonState = new boolean[1];
-//	final byte[] hatState = new byte[1];
+	final float[] axisState;
+	final boolean[] buttonState;
+	final PovDirection[] hatState;
 	final static Vector3 zero = new Vector3(0, 0, 0);
-//	final String name = "";
+
 
 	public SDL2Controller(SDL2ControllerManager manager, int device_index) throws SDL_Error{
 		this.manager = manager;
 		this.device_index = device_index;
 
 		joystick = SDL_Joystick.JoystickOpen(device_index);
+
+		axisState = new float[joystick.numAxes()];
+		buttonState = new boolean[joystick.numButtons()];
+		hatState = new PovDirection[joystick.numHats()];
 
 		if(SDL.SDL_IsGameController(device_index)) {
 			controller = SDL_GameController.GameControllerOpen(device_index);
@@ -57,7 +63,7 @@ public class SDL2Controller implements Controller {
 ////		this.name = GLFW.glfwGetJoystickName(index);
 //	}
 	
-	void pollState() {
+	void pollState() throws SDL_Error {
 //		if(!GLFW.glfwJoystickPresent(index)) {
 //			manager.disconnected(this);
 //			return;
@@ -88,30 +94,44 @@ public class SDL2Controller implements Controller {
 //			}
 //			axisState[i] = axes.get(i);
 //		}
-//
-//		for(int i = 0; i < buttons.limit(); i++) {
-//			if(buttonState[i] != (buttons.get(i) == GLFW.GLFW_PRESS)) {
-//				for(ControllerListener listener: listeners) {
-//					if(buttons.get(i) == GLFW.GLFW_PRESS) {
-//						listener.buttonDown(this, i);
-//					} else {
-//						listener.buttonUp(this, i);
-//					}
-//				}
-//				manager.buttonChanged(this, i, buttons.get(i) == GLFW.GLFW_PRESS);
-//			}
-//			buttonState[i] = buttons.get(i) == GLFW.GLFW_PRESS;
-//		}
-//
-//		for(int i = 0; i < hats.limit(); i++) {
-//			if(hatState[i] != hats.get(i)) {
-//				hatState[i] = hats.get(i);
-//				for(ControllerListener listener: listeners) {
-//					listener.povMoved(this, i, getPov(i));
-//				}
-//				manager.hatChanged(this, i, getPov(i));
-//			}
-//		}
+
+
+
+
+		for(int i=0; i<axisState.length; i++){
+			if(axisState[i] != getAxis(i)){
+				for(ControllerListener listener: listeners) {
+					listener.axisMoved(this, i, getAxis(i));
+				}
+				manager.axisChanged(this, i, getAxis(i));
+			}
+			axisState[i] =  getAxis(i);
+		}
+
+
+		for(int i = 0; i < buttonState.length; i++) {
+			if(buttonState[i] != getButton(i)) {
+				for(ControllerListener listener: listeners) {
+					if(getButton((i))) {
+						listener.buttonDown(this, i);
+					} else {
+						listener.buttonUp(this, i);
+					}
+				}
+				manager.buttonChanged(this, i, getButton(i));
+			}
+			buttonState[i] = getButton(i);
+		}
+
+		for(int i = 0; i < hatState.length; i++) {
+			if(hatState[i] != getPov(i)) {
+				hatState[i] = getPov(i);
+				for(ControllerListener listener: listeners) {
+					listener.povMoved(this, i, getPov(i));
+				}
+				manager.hatChanged(this, i, getPov(i));
+			}
+		}
 
 	}
 
