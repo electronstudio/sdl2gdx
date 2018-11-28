@@ -3,7 +3,7 @@ package org.libsdl;
 import java.util.Objects;
 
 public final class SDL_JoystickID {
-    final int id;
+    public final int id;
     SDL_JoystickID(int id) { this.id = id;}
 
     @Override
@@ -17,5 +17,10 @@ public final class SDL_JoystickID {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString(){
+        return ""+id;
     }
 }

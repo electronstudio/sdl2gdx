@@ -29,8 +29,10 @@ import java.util.Objects;
 public final class SDL_Joystick {
     final long ptr;
     final float AXIS_MIN, AXIS_MAX;
+    final SDL_JoystickID instanceID;
     SDL_Joystick(long ptr){
         this.ptr=ptr;
+        this.instanceID = new SDL_JoystickID(SDL.SDL_JoystickInstanceID(ptr));
         AXIS_MAX=SDL.SDL_JOYSTICK_AXIS_MAX();
         AXIS_MIN=SDL.SDL_JOYSTICK_AXIS_MIN();
     }
@@ -133,7 +135,7 @@ public final class SDL_Joystick {
     }
 
     public SDL_JoystickID instanceID(){
-        return new SDL_JoystickID(SDL.SDL_JoystickInstanceID(ptr));
+        return instanceID;
     }
 
     public String name(){
@@ -164,6 +166,9 @@ public final class SDL_Joystick {
         SDL.SDL_JoystickClose(ptr);
     }
 
+    public String GUID() { return SDL.SDL_JoystickGUIDString(ptr);}
+
+    public static int productVersion(int device_index) { return SDL.SDL_JoystickGetDeviceProductVersion(device_index);}
 
 
     /**

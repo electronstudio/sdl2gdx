@@ -106,6 +106,13 @@ final public class SDL {
         return SDL_NumJoysticks();
     */
 
+    public static native int SDL_JoystickGetDeviceInstanceID(int device); /*
+        return SDL_JoystickGetDeviceInstanceID(device);
+    */
+
+    public static native int SDL_JoystickGetDeviceProductVersion(int device_id); /*
+        return SDL_JoystickGetDeviceProductVersion(device_id);
+     */
 
     // GameController.h
 
@@ -205,6 +212,13 @@ final public class SDL {
     public static native int SDL_GameControllerGetAxis(long ptr, int axis); /*
         return SDL_GameControllerGetAxis((SDL_GameController*) ptr, (SDL_GameControllerAxis) axis);
     */
+
+    public static native String SDL_JoystickGUIDString(long ptr); /*
+          char guid[64];
+          SDL_JoystickGetGUIDString(SDL_JoystickGetGUID((SDL_Joystick*)ptr), guid, sizeof (guid));
+          return env->NewStringUTF(guid);
+    */
+
 
     // TODO
 //SDL_GameControllerGetAxisFromString
@@ -338,6 +352,9 @@ final public class SDL {
     */
 
 
+
+
+    /*
 
 //    public static native int SDL_PollEvent(); /*
 //        return SDL_PollEvent(SDL_Event* event)

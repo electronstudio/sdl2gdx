@@ -7,15 +7,15 @@ import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.ControllerManager;
 import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.IntArray;
 import org.libsdl.*;
-
-import java.io.IOException;
 
 public class SDL2ControllerManager implements ControllerManager {
 
 	final Array<Controller> controllers = new Array<>();
 	final Array<Controller> polledControllers = new Array<>();
 	final Array<Controller> disconnectedControllers = new Array<>();
+	final IntArray connectedInstanceIds = new IntArray(128);
 	//final Array<SDL_JoystickID> connectedInstanceIDs = new Array<>();
 	final Array<ControllerListener> listeners = new Array<ControllerListener>();
 
@@ -47,7 +47,7 @@ public class SDL2ControllerManager implements ControllerManager {
 			String name = SDL_Joystick.joystickNameForIndex(i);
 			System.out.printf("Joystick %d: %s\n", i, name!=null ? name : "Unknown Joystick");
 
-				controllers.add(new SDL2Controller(this, i));
+				connected(new SDL2Controller(this, i));
 
 //                char guid[64];
 //                SDL_assert(SDL_JoystickFromInstanceID(SDL_JoystickInstanceID(joystick)) == joystick);
@@ -88,7 +88,16 @@ public class SDL2ControllerManager implements ControllerManager {
 	//	SDL.SDL_JoystickUpdate();
 	//	sdl.update();
 
+	//	System.out.println("numJoysticks "+ SDL_Joystick.numJoysticks());
+	//	System.out.println("connectedInstanceIds "+connectedInstanceIds);
+
 		for(int i = 0; i < SDL_Joystick.numJoysticks(); i++){
+			int id = SDL.SDL_JoystickGetDeviceInstanceID(i);
+			if(!connectedInstanceIds.contains(id)) {
+//				System.out.println("connectedInstanceIds "+connectedInstanceIds+" does not contain "+id);
+				connected(new SDL2Controller(this,i ));
+			}
+//			((SDL2Controller)controller).joystick.instanceID().equals()
 //			SDL_Joystick = SDL_Joystick.
 //			SDL_JoystickID id =
 		}
@@ -109,11 +118,17 @@ public class SDL2ControllerManager implements ControllerManager {
 //			}
 //		}
 		
-//		polledControllers.addAll(controllers);
-//		for(Controller controller: polledControllers) {
-//			((SDL2Controller)controller).pollState();
-//		}
-//		polledControllers.clear();
+		polledControllers.addAll(controllers);
+		for(Controller controller: polledControllers) {
+			SDL2Controller c = (SDL2Controller)controller;
+			if(c.isConnected()){
+				c.pollState();
+			}else {
+				disconnected(c);
+			}
+		}
+		polledControllers.clear();
+
 	}
 	
 	@Override
@@ -137,14 +152,19 @@ public class SDL2ControllerManager implements ControllerManager {
 	}
 	
 	void connected (SDL2Controller controller) {
+		System.out.println("connected "+controller);
 		controllers.add(controller);
+		connectedInstanceIds.add(controller.joystick.instanceID().id);
 		for(ControllerListener listener: listeners) {
 			listener.connected(controller);
 		}
 	}
 
 	void disconnected (SDL2Controller controller) {
-		controllers.removeValue(controller, true);
+		System.out.println("disconnected "+controller);
+		controllers.removeValue(controller, false);
+		connectedInstanceIds.removeValue(controller.joystick.instanceID().id);
+		controller.close();
 		for(ControllerListener listener: listeners) {
 			listener.disconnected(controller);
 		}

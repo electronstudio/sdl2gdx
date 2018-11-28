@@ -17,7 +17,12 @@ public class Test {
         while (true){
             try {
                 manager.pollState();
-                System.out.println(manager.getControllers().get(1).getAxis(4));
+               System.out.println("number of conttrollers "+manager.getControllers().size);//get(1).getAxis(4));
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             } catch (SDL_Error sdl_error) {
                 sdl_error.printStackTrace();
             }

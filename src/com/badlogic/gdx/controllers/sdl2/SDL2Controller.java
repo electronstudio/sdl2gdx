@@ -16,7 +16,7 @@ import static org.libsdl.SDL.*;
 public class SDL2Controller implements Controller {
 	final SDL2ControllerManager manager;
 	final Array<ControllerListener> listeners = new Array<ControllerListener>();
-	//final int index;
+	final int device_index;
 	final SDL_Joystick joystick;
 	final SDL_GameController controller;
 //	final float[] axisState = new float[1];
@@ -27,18 +27,22 @@ public class SDL2Controller implements Controller {
 
 	public SDL2Controller(SDL2ControllerManager manager, int device_index) throws SDL_Error{
 		this.manager = manager;
+		this.device_index = device_index;
+
+		joystick = SDL_Joystick.JoystickOpen(device_index);
 
 		if(SDL.SDL_IsGameController(device_index)) {
 			controller = SDL_GameController.GameControllerOpen(device_index);
-			joystick = null;
 		}else{
 			controller = null;
-			joystick = SDL_Joystick.JoystickOpen(device_index);
 		}
 		System.out.println("joystick "+joystick+" controller "+controller);
 		if(joystick==null && controller==null) throw new SDL_Error();
 	}
 
+	public boolean isConnected(){
+		return joystick.getAttached();
+	}
 //	public SDL2Controller(SDL2ControllerManager manager, SDL_Joystick joystick) {
 //		this(manager, joystick, null);
 //	}
@@ -191,5 +195,15 @@ public class SDL2Controller implements Controller {
 		}else {
 			return "SDL Joystick " + joystick.name();
 		}
-	}	
+	}
+
+	@Override
+	public String toString(){
+		return getName()+" instance:"+joystick.instanceID()+" "+" guid: "+joystick.GUID()+" v "+joystick.productVersion(device_index);
+	}
+
+	public void close(){
+		joystick.close();
+		if(controller!=null) controller.close();
+	}
 }
