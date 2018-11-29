@@ -9,6 +9,7 @@ import org.libsdl.SDL;
 import org.libsdl.SDL_Error;
 
 public class SDLHotplugTest {
+    static Controller recent;
     public static void main(String[] args){
 
        // ControllerManager c = new ControllerManager();
@@ -18,10 +19,13 @@ public class SDLHotplugTest {
 
         SDL2ControllerManager manager = new SDL2ControllerManager();
 
+
+
         manager.addListener(new ControllerListener() {
             @Override
             public void connected(Controller controller) {
                 System.out.println("LISTENER CONNECTED "+controller);
+                recent=controller;
             }
 
             @Override
@@ -71,6 +75,9 @@ public class SDLHotplugTest {
         while (true){
             try {
                 manager.pollState();
+                if(recent!=null){
+                    System.out.println(recent.getButton(0));
+                }
                 try {
                     Thread.sleep(16);
                 } catch (InterruptedException e) {

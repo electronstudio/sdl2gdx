@@ -32,8 +32,13 @@ final public class SDL {
     */
 
     public static native boolean SDL_JoystickGetAttached(long ptr);/*
-        return (SDL_JoystickGetAttached((SDL_Joystick*) ptr)==SDL_TRUE);
+        SDL_Joystick* pad = (SDL_Joystick*) ptr;
+        if (pad && SDL_JoystickGetAttached(pad)==SDL_TRUE) {
+            return JNI_TRUE;
+        }
+        return JNI_FALSE;
     */
+
 
     public static native int SDL_JoystickGetAxis(long ptr, int axis); /*
         return SDL_JoystickGetAxis((SDL_Joystick*) ptr, axis);
@@ -218,8 +223,12 @@ final public class SDL {
         return (uintptr_t)SDL_GameControllerFromInstanceID(joyid);
     */
 
-    public static native boolean SDL_GameControllerGetAttached(long ptr);/*
-        return (SDL_GameControllerGetAttached((SDL_GameController*) ptr)==SDL_TRUE);
+    public static native boolean SDL_GameControllerGetAttached(long ptr); /*
+        SDL_GameController* pad = (SDL_GameController*) ptr;
+        if (pad && SDL_GameControllerGetAttached(pad)==SDL_TRUE) {
+            return JNI_TRUE;
+        }
+        return JNI_FALSE;
     */
 
     public static native int SDL_GameControllerGetAxis(long ptr, int axis); /*

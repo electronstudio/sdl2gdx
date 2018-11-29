@@ -8,7 +8,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.Objects;
 
 public final class SDL_GameController {
-    final long ptr;
+    long ptr;
 
     final float AXIS_MIN, AXIS_MAX;
 
@@ -19,14 +19,18 @@ public final class SDL_GameController {
     }
 
     public void close(){
-        SDL.SDL_GameControllerClose(ptr);
+        if(ptr !=0){
+            SDL.SDL_GameControllerClose(ptr);
+            ptr=0;
+        }
     }
 
     public boolean getAttached(){
-        return (SDL.SDL_GameControllerGetAttached(ptr));
+        return (ptr !=0 && SDL.SDL_GameControllerGetAttached(ptr));
     }
 
     public float getAxis(int axis){
+        if(!getAttached()) return 0;
         int i = SDL.SDL_GameControllerGetAxis(ptr, axis);
         if(i<0) return i/-AXIS_MIN;
         return i/AXIS_MAX;
@@ -37,7 +41,7 @@ public final class SDL_GameController {
     // //getBindForButton
 
     public boolean getButton(int button){
-        return (SDL.SDL_GameControllerGetButton(ptr, button)==1);
+        return (getAttached() && SDL.SDL_GameControllerGetButton(ptr, button)==1);
     }
 
 
@@ -53,9 +57,9 @@ public final class SDL_GameController {
         return SDL.SDL_GameControllerName(ptr);
     }
 
-    public SDL_Joystick getJoystick(){
-        return new SDL_Joystick(SDL.SDL_GameControllerGetJoystick(ptr));
-    }
+   // public SDL_Joystick getJoystick(){
+   //     return new SDL_Joystick(SDL.SDL_GameControllerGetJoystick(ptr));
+   // }
 
     //TODO
     //getStringForAxis

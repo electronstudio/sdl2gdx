@@ -27,7 +27,7 @@ import java.util.Objects;
  */
 
 public final class SDL_Joystick {
-    final long ptr;
+    long ptr;
     final float AXIS_MIN, AXIS_MAX;
     final SDL_JoystickID instanceID;
     SDL_Joystick(long ptr){
@@ -91,10 +91,11 @@ public final class SDL_Joystick {
 
 
     public boolean getAttached(){
-        return (SDL.SDL_JoystickGetAttached(ptr));
+        return (ptr !=0 && SDL.SDL_JoystickGetAttached(ptr));
     }
 
     public float getAxis(int axis){
+        if(!getAttached()) return 0;
         int i = SDL.SDL_JoystickGetAxis(ptr, axis);
         if(i<0) return i/-AXIS_MIN;
         return i/AXIS_MAX;
@@ -106,7 +107,7 @@ public final class SDL_Joystick {
 //        }
 
     public boolean getButton(int button){
-        return (SDL.SDL_JoystickGetButton(ptr, button)==1);
+        return (getAttached() && SDL.SDL_JoystickGetButton(ptr, button)==1);
     }
 
 
@@ -131,6 +132,7 @@ public final class SDL_Joystick {
 
 
     public int getHat(int hat){
+        if(!getAttached()) return 0;
         return SDL.SDL_JoystickGetHat(ptr, hat);
     }
 
@@ -139,34 +141,45 @@ public final class SDL_Joystick {
     }
 
     public String name(){
+        if(!getAttached()) return "unAttached";
         return SDL.SDL_JoystickName(ptr);
     }
 
     public int numAxes() throws SDL_Error{
+        if(!getAttached()) throw new SDL_Error();
         int num = SDL.SDL_JoystickNumAxes(ptr);
         if(num>=0) return num; else throw new SDL_Error();
     }
 
     public int numButtons() throws SDL_Error{
+        if(!getAttached()) throw new SDL_Error();
         int num = SDL.SDL_JoystickNumButtons(ptr);
         if(num>=0) return num; else throw new SDL_Error();
     }
 
     public int numBalls() throws SDL_Error{
+        if(!getAttached()) throw new SDL_Error();
         int num = SDL.SDL_JoystickNumBalls(ptr);
         if(num>=0) return num; else throw new SDL_Error();
     }
 
     public int numHats() throws SDL_Error{
+        if(!getAttached()) throw new SDL_Error();
         int num = SDL.SDL_JoystickNumHats(ptr);
         if(num>=0) return num; else throw new SDL_Error();
     }
 
     public void close(){
-        SDL.SDL_JoystickClose(ptr);
+        if(getAttached()){
+            SDL.SDL_JoystickClose(ptr);
+            ptr=0;
+        }
     }
 
-    public String GUID() { return SDL.SDL_JoystickGUIDString(ptr);}
+    public String GUID() {
+        if(!getAttached()) return "unAttached";
+        return SDL.SDL_JoystickGUIDString(ptr);
+    }
 
     public static int productVersion(int device_index) { return SDL.SDL_JoystickGetDeviceProductVersion(device_index);}
 
@@ -192,6 +205,7 @@ public final class SDL_Joystick {
      */
     public boolean rumble(float leftMagnitude, float rightMagnitude, int duration_ms)  {
 
+        if(!getAttached()) return false;
 
         //Check the values are appropriate
         boolean leftInRange = leftMagnitude >= 0 && leftMagnitude <= 1;
