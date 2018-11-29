@@ -1,5 +1,10 @@
 # Jamepad fork by ElectronStudio
 
+current Linux compile flags to avoid dependencies:
+
+./configure CFLAGS=-fPIC CPPFLAGS=-fPIC --disable-audio --disable-ime --disable-video-vulkan
+ 
+
 #### New changes in this fork
 
 * Uses new rumble API and depreciates the old haptics API.
