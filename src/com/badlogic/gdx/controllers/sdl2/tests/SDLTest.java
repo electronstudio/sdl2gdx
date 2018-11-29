@@ -24,7 +24,7 @@ public class SDLTest {
         testFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         testFrame.setLocationRelativeTo(null);
         testFrame.setMinimumSize(new Dimension(640, 350));
-        testFrame.setResizable(false);
+        testFrame.setResizable(true);
         testFrame.setVisible(true);
 
         SDLInfoPanel[] controllerTabs = new SDLInfoPanel[NUM_CONTROLLERS];

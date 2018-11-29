@@ -28,7 +28,7 @@ final public class SDL {
     */
 
     public static native long SDL_JoystickFromInstanceID(int joyid); /*
-        return (long)SDL_JoystickFromInstanceID(joyid);
+        return (uintptr_t)SDL_JoystickFromInstanceID(joyid);
     */
 
     public static native boolean SDL_JoystickGetAttached(long ptr);/*
@@ -95,7 +95,7 @@ final public class SDL {
 
 
     public static native long SDL_JoystickOpen(int i); /*
-        return (long)SDL_JoystickOpen(i);
+        return (uintptr_t)SDL_JoystickOpen(i);
     */
 
     public static native void SDL_JoystickUpdate();/*
@@ -215,7 +215,7 @@ final public class SDL {
     */
 
     public static native long SDL_GameControllerFromInstanceID(int joyid); /*
-        return (long)SDL_GameControllerFromInstanceID(joyid);
+        return (uintptr_t)SDL_GameControllerFromInstanceID(joyid);
     */
 
     public static native boolean SDL_GameControllerGetAttached(long ptr);/*
@@ -245,7 +245,7 @@ final public class SDL {
     // TODO
     //SDL_GameControllerGetButtonFromString
     public static native long SDL_GameControllerGetJoystick(long ptr);/*
-        return (long)SDL_GameControllerGetJoystick((SDL_GameController*)ptr);
+        return (uintptr_t)SDL_GameControllerGetJoystick((SDL_GameController*)ptr);
     */
     //SDL_GameControllerGetStringForAxis
     //SDL_GameControllerGetStringForButton
@@ -263,7 +263,7 @@ final public class SDL {
 
 
     public static native long SDL_GameControllerOpen(int i); /*
-        return (long)SDL_GameControllerOpen(i);
+        return (uintptr_t)SDL_GameControllerOpen(i);
     */
 
     public static native void SDL_GameControllerUpdate();/*
