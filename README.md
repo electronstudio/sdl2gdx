@@ -28,11 +28,16 @@ Compared to the default LibGDX Controller implementation:
 ### LibGDX desktop project (the easy way)
 
 ```diff
+buildscript{
+    repositories {
++        jcenter()
+    }
+}
 project(":desktop") {
     dependencies {
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-         compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
+        compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
 -       compile "com.badlogicgames.gdx:gdx-controllers-desktop:$gdxVersion"
 -       compile "com.badlogicgames.gdx:gdx-controllers-platform:$gdxVersion:natives-desktop"
 +       compile "uk.co.electronstudio.retrowar:sdl2gdx:1.0.+"
@@ -85,7 +90,7 @@ try {
 [electronstudio.github.io/sdl2gdx/](https://electronstudio.github.io/sdl2gdx/)
 
 ## You might also like
-*  [Jamepad](https://github.com/williamahartman/Jamepad) - Java SDL Joystick library
+* [Jamepad](https://github.com/williamahartman/Jamepad) - Java SDL Joystick library
 * [RetroWar-common](https://github.com/electronstudio/retrowar-common) - LibGDX extension library
 * [RetroWar](http://retrowar.net) - My game
 
