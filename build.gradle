@@ -80,13 +80,17 @@ task distTester(dependsOn: classes, type: Jar) {
     from {configurations.compile.collect {zipTree(it)}}
 
     manifest {
-        attributes 'Main-Class': 'com.badlogic.gdx.controllers.sdl2.tests.SDLTest'
+        attributes 'Main-Class': 'uk.co.electronstudio.sdl2gdx.tests.SDLTest'
     }
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'
     from sourceSets.main.allSource
+}
+javadoc {
+    exclude 'com/studiohartman/jamepad/**'
+    exclude 'com/badlogic/**'
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {

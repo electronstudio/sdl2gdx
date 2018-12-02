@@ -1,11 +1,10 @@
-package com.badlogic.gdx.controllers.sdl2.tests;
+package uk.co.electronstudio.sdl2gdx.tests;
 
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.PovDirection;
-import com.badlogic.gdx.controllers.sdl2.SDL2ControllerManager;
+import uk.co.electronstudio.sdl2gdx.SDL2ControllerManager;
 import com.badlogic.gdx.math.Vector3;
-import org.libsdl.SDL;
 import org.libsdl.SDL_Error;
 
 public class SDLHotplugTest {
@@ -18,7 +17,6 @@ public class SDLHotplugTest {
 //        System.out.println(SDL.SDL_GetError());
 
         SDL2ControllerManager manager = new SDL2ControllerManager();
-
 
 
         manager.addListener(new ControllerListener() {

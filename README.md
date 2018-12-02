@@ -52,8 +52,9 @@ project(":core") {
 }
 ```
 
-This makes your project less portable.  But you can then create your own SDL2ControllerManager,
+You can then create your own SDL2ControllerManager,
 which is just like ControllerManager but with more features.  Works for LibGDX and non-LibGDX projects.
+ This makes your project less portable, i.e. won't work on mobile.
 
 ```java
   SDL2ControllerManager controllerManager = new SDL2ControllerManager();
@@ -63,36 +64,34 @@ which is just like ControllerManager but with more features.  Works for LibGDX a
 
 ### Reflection
 
-Slower, but avoids dependencies.
+Slower, unsafe, but avoids dependencies in your core project so your mobile projects still work.
 ```java
-    SDL2ControllerManager controllerManager = new SDL2ControllerManager();
-    Method method = null;
-    Controller controller = controllerManager.getControllers().get(0);
-    for( Method m: controller.getClass().getMethods()){
-        if(m.getName().equals("rumble"))method = m;
-    }
-    try {
-        method.invoke(controller, 1f, 1f, 500);
-    } catch (IllegalAccessException | InvocationTargetException e) {
-        e.printStackTrace();
-    }
+Method method = null;
+Controller controller = Controllers.getControllers().get(0);
+for( Method m: controller.getClass().getMethods()){
+    if(m.getName().equals("rumble"))method = m;
+}
+try {
+    method.invoke(controller, 1f, 1f, 500);
+} catch (IllegalAccessException | InvocationTargetException e) {
+    e.printStackTrace();
+}    
 ```
 
 
-current Linux compile flags to avoid dependencies:
+## You might also like
+*  [Jamepad](https://github.com/williamahartman/Jamepad) - Java SDL Joystick library
+* [RetroWar-common](https://github.com/electronstudio/retrowar-common) - LibGDX extension library
+* [RetroWar](http://retrowar.net) - My game
 
-./configure CFLAGS=-fPIC CPPFLAGS=-fPIC --disable-audio --disable-ime --disable-video-vulkan
- 
-
-
-# Building
+## Building from source 
 1.  run `./gradlew windowsNatives`
 2.  run `./gradlew linuxNatives`
 3.  Clone the repo on a mac. Copy the files you just built (from the `libs` folder) to the mac 
 4.  On the mac, run `./gradlew OSXNatives`
 5.  run `./gradle dist` to generate a .jar file with all the dependencies bundled
 
-## Dependencies for Building on Linux
+### Dependencies for Building on Linux
 Right now the Windows and Linux binaries, Jamepad needs to be built on Linux. The binaries for Windows are cross-compiled.
 
 The following packages (or equivalents) are needed:
@@ -117,7 +116,7 @@ You also need to install cross compiled 32 and 64 bit versions of SDL, e.g.
 ```
 
 
-## Dependencies for Building on OS X
+### Dependencies for Building on OS X
 The OS X binaries currently must be built on OS X. It is probably possible to build the Windows and Linux binaries here too, but I haven't tried that out.
 
 The dependencies are pretty much the same (gradle, ant, g++). These packages can be installed from homebrew.

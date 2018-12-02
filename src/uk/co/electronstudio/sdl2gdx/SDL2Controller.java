@@ -1,4 +1,4 @@
-package com.badlogic.gdx.controllers.sdl2;
+package uk.co.electronstudio.sdl2gdx;
 
 
 import com.badlogic.gdx.controllers.Controller;
@@ -6,7 +6,6 @@ import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
-import com.studiohartman.jamepad.ControllerUnpluggedException;
 import org.libsdl.SDL;
 import org.libsdl.SDL_Error;
 import org.libsdl.SDL_GameController;

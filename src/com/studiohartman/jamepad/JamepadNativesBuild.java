@@ -48,45 +48,45 @@ class JamepadNativesBuild {
         BuildTarget mac64 = BuildTarget.newDefaultTarget(TargetOs.MacOsX, true);
 
         if(buildLinux) {
-            checkSDLVersion("sdl2-config", minSDLversion);
+            checkSDLVersion("sdl2gdx-config", minSDLversion);
 
             lin64.cIncludes = new String[] {};
-            String cflags = execCmd("sdl2-config --cflags"); // "-I/usr/local/include/SDL2"
+            String cflags = execCmd("sdl2gdx-config --cflags"); // "-I/usr/local/include/SDL2"
             lin64.cFlags = lin64.cFlags + " "  + cflags;
             lin64.cppFlags = lin64.cFlags;
             lin64.linkerFlags = "-shared -m64";
-            String libraries = execCmd("sdl2-config --static-libs").replace("-lSDL2","-l:libSDL2.a" );
+            String libraries = execCmd("sdl2gdx-config --static-libs").replace("-lSDL2","-l:libSDL2.a" );
             //"-L/usr/local/lib -Wl,-rpath,/usr/local/lib -Wl,--enable-new-dtags -l:libSDL2.a -Wl,--no-undefined -lm -ldl -lsndio -lpthread -lrt";
             lin64.libraries = libraries;
         }
 
         if(buildOSX){
-            checkSDLVersion("sdl2-config", minSDLversion);
+            checkSDLVersion("sdl2gdx-config", minSDLversion);
 
             mac64.cIncludes = new String[] {};
             //mac64.headerDirs = new String[] {"/usr/local/include/SDL2"};
-            String cflags = execCmd("sdl2-config --cflags");
+            String cflags = execCmd("sdl2gdx-config --cflags");
             mac64.cFlags = cflags + " -c -Wall -O2 -arch x86_64 -DFIXED_POINT -fmessage-length=0 -fPIC -mmacosx-version-min=10.6";
             mac64.cppFlags = mac64.cFlags;
             mac64.linkerFlags = "-shared -arch x86_64 -mmacosx-version-min=10.6";
             mac64.libraries = macLibPath +" -lm -liconv -Wl,-framework,CoreAudio -Wl,-framework,AudioToolbox -Wl,-framework,ForceFeedback -lobjc -Wl,-framework,CoreVideo -Wl,-framework,Cocoa -Wl,-framework,Carbon -Wl,-framework,IOKit -Wl,-weak_framework,QuartzCore -Wl,-weak_framework,Metal";
                     // we cant use:
-                    //   execCmd("sdl2-config --static-libs").replace("-lSDL2","-l:libSDL2.a" )
+                    //   execCmd("sdl2gdx-config --static-libs").replace("-lSDL2","-l:libSDL2.a" )
                     // because OSX has Clang, not GCC.  See https://jonwillia.ms/2018/02/02/static-linking for the problem
 
         }
 
         if(buildWindows){
-            checkSDLVersion(win32crossCompilePath+"sdl2-config", minSDLversion);
-            checkSDLVersion(win64crossCompilePath+"sdl2-config", minSDLversion);
+            checkSDLVersion(win32crossCompilePath+"sdl2gdx-config", minSDLversion);
+            checkSDLVersion(win64crossCompilePath+"sdl2gdx-config", minSDLversion);
 
-            win32.cFlags = win32.cFlags + " " +execCmd(win32crossCompilePath+"sdl2-config --cflags");
+            win32.cFlags = win32.cFlags + " " +execCmd(win32crossCompilePath+"sdl2gdx-config --cflags");
             win32.cppFlags = win32.cFlags;
-            win32.libraries = execCmd(win32crossCompilePath+"sdl2-config --static-libs");
+            win32.libraries = execCmd(win32crossCompilePath+"sdl2gdx-config --static-libs");
 
-            win64.cFlags = win64.cFlags + " " +execCmd(win64crossCompilePath+"sdl2-config --cflags");
+            win64.cFlags = win64.cFlags + " " +execCmd(win64crossCompilePath+"sdl2gdx-config --cflags");
             win64.cppFlags = win64.cFlags;
-            win64.libraries = execCmd(win64crossCompilePath+"sdl2-config --static-libs");
+            win64.libraries = execCmd(win64crossCompilePath+"sdl2gdx-config --static-libs");
         }
 
         //Generate native code, build scripts

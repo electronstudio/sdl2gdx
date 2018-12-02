@@ -1,11 +1,6 @@
-package com.badlogic.gdx.controllers.sdl2.tests;
+package uk.co.electronstudio.sdl2gdx.tests;
 
-import com.badlogic.gdx.controllers.Controller;
-import com.badlogic.gdx.controllers.sdl2.SDL2Controller;
-import com.studiohartman.jamepad.ControllerAxis;
-import com.studiohartman.jamepad.ControllerButton;
-import com.studiohartman.jamepad.ControllerIndex;
-import com.studiohartman.jamepad.ControllerUnpluggedException;
+import uk.co.electronstudio.sdl2gdx.SDL2Controller;
 import org.libsdl.SDL;
 import org.libsdl.SDL_Error;
 

@@ -1,4 +1,4 @@
-package com.badlogic.gdx.controllers.sdl2;
+package uk.co.electronstudio.sdl2gdx;
 
 
 import com.badlogic.gdx.Gdx;
