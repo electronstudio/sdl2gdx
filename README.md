@@ -1,4 +1,42 @@
-# Jamepad fork by ElectronStudio
+# Java SDL - GDX Controllers
+
+## What
+
+This library provides APIs at three layers:
+1. A Java wrapper around SDL.  Currently we wrap most of Joystick and GameController.  PRs to wrap further APIs are welcome.  This wrapper is as close to the C source as
+possible, so you should be able to port any SDL examples with no changes.
+2. An OO wrapper on top of layer 1.  The same functions as provided by SDL, but with a class based API to make them more friendly to use.
+3. An implementation of LibGDX Controller API on top of layer 2.  You can slot this straight in to any LibGDX app, or you can use it directly in a non-LibGDX app.
+
+Thanks to [Jamepad](https://github.com/williamahartman/Jamepad) by William Harman for providing the build system and inspiring this project.
+
+## Why
+
+Compared to the default LibGDX Controller implementation:
+* __Hotplug__ works.
+* Doesn't quit working when the screenmode changes.
+* __Rumble__!
+* Can get more info, such as USB IDs and XInput Player LED number.
+* Datab8ase of __mappings__ for large number of controllers, so you don't have to worry about it.
+* SDL is recommended by Valve as second best way to do input for __Steam__ (after Steam Input of course!)
+* Supports __Nintendo__ and __Sony__ controllers using USB drivers taken from Steam.
+
+## How
+
+### LibGDX project, simple way
+
+```diff
+project(":desktop") {
+    dependencies {
+        compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+        compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+-       compile "com.badlogicgames.gdx:gdx-controllers-desktop:$gdxVersion"~
+-       compile "com.badlogicgames.gdx:gdx-controllers-platform:$gdxVersion:natives-desktop"~~
++       compile "uk.co.electronstudio.retrowar::1.0.+"
+    }
+}
+```
+
 
 current Linux compile flags to avoid dependencies:
 
