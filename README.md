@@ -10,7 +10,7 @@ possible, so you should be able to port any SDL examples with no changes.
 2. An OO wrapper on top of layer 1.  The same functions as provided by SDL, but with a class based API to make them more friendly to use.
 3. An implementation of LibGDX Controller API on top of layer 2.  You can slot this straight in to any LibGDX app, or you can use it directly in a non-LibGDX app.
 
-Thanks to [Jamepad](https://github.com/williamahartman/Jamepad) by William Harman for providing the build system and inspiring this project.
+Thanks to [Jamepad](https://github.com/williamahartman/Jamepad) by William Harman for providing the basis, native build system and inspiration for this project.
 
 ## Why
 
