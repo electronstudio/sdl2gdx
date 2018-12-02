@@ -1,12 +1,16 @@
 package com.badlogic.gdx.controllers.sdl2.tests;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.sdl2.SDL2Controller;
 import com.badlogic.gdx.controllers.sdl2.SDL2ControllerManager;
 import org.libsdl.SDL_Error;
 
 import javax.swing.*;
 import java.awt.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * A quick and dirty interface to check if a controller is working. I hope you like swing!
@@ -17,8 +21,21 @@ public class SDLTest {
     public static void run() {
         JTabbedPane tabbedPane = new JTabbedPane();
 
-        SDL2ControllerManager controllers = new SDL2ControllerManager();
+        SDL2ControllerManager controllerManager = new SDL2ControllerManager();
 
+        //  SDL2Controller controller = (SDL2Controller)controllerManager.getControllers().get(0);
+      //  controller.rumble(1.0f,1.0f,500);
+
+        Method method = null;
+        Controller controller = controllerManager.getControllers().get(0);
+        for( Method m: controller.getClass().getMethods()){
+            if(m.getName().equals("rumble"))method = m;
+        }
+        try {
+            method.invoke(controller, 1f, 1f, 500);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
 
         JFrame testFrame = new JFrame();
         testFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -43,12 +60,12 @@ public class SDLTest {
             }
 
             try {
-                controllers.pollState();
+                controllerManager.pollState();
             } catch (SDL_Error sdl_error) {
                 sdl_error.printStackTrace();
             }
-            for(int i = 0;  i < controllers.getControllers().size; i++) {
-                Controller controllerAtIndex = controllers.getControllers().get(i);
+            for(int i = 0;  i < controllerManager.getControllers().size; i++) {
+                Controller controllerAtIndex = controllerManager.getControllers().get(i);
              //   if(controllerAtIndex.)) {
                     controllerTabs[i].updatePanel((SDL2Controller)controllerAtIndex);
               //  } else {
