@@ -28,6 +28,7 @@ dependencies {
 
 task deleteJniFolder(type: Delete) {
     delete "jni"
+    delete "docs"
 }
 
 clean.dependsOn(deleteJniFolder)
@@ -91,6 +92,8 @@ task sourcesJar(type: Jar, dependsOn: classes) {
 javadoc {
     exclude 'com/studiohartman/jamepad/**'
     exclude 'com/badlogic/**'
+    destinationDir = new File('docs')
+    options.overview = "overview.html"
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
