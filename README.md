@@ -40,7 +40,7 @@ project(":desktop") {
         compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
 -       compile "com.badlogicgames.gdx:gdx-controllers-desktop:$gdxVersion"
 -       compile "com.badlogicgames.gdx:gdx-controllers-platform:$gdxVersion:natives-desktop"
-+       compile "uk.co.electronstudio.retrowar:sdl2gdx:1.0.+"
++       compile "uk.co.electronstudio.sdl2gdx:sdl2gdx:1.0.+"
     }
 }
 ```
@@ -54,7 +54,7 @@ You can make your project depend on SDLJava.
 ```diff
 project(":core") {
     dependencies {
-+       compile "uk.co.electronstudio.retrowar:sdl2gdx:1.0.+"
++           compile "uk.co.electronstudio.sdl2gdx:sdl2gdx:1.0.+"
     }
 }
 ```
