@@ -84,6 +84,11 @@ try {
 * [RetroWar-common](https://github.com/electronstudio/retrowar-common) - LibGDX extension library
 * [RetroWar](http://retrowar.net) - My game
 
+## License
+
+sdl2gdx is distributed under GPL+Classpath license, the same as OpenJDK itself, so you will have no
+problem using it anywhere you use OpenJDK.
+
 ## Building from source 
 1.  run `./gradlew windowsNatives`
 2.  run `./gradlew linuxNatives`
