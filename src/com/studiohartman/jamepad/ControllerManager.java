@@ -29,6 +29,11 @@ public class ControllerManager {
     SDL_Event event;
     */
 
+    public native int SDL_Init(int flags); /*
+        return SDL_Init(flags);
+    */
+
+
     private String mappingsPath;
     private boolean isInitialized;
     private ControllerIndex[] controllers;
