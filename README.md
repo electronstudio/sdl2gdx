@@ -85,9 +85,12 @@ try {
 }    
 ```
 
-## API Documentation
+## Documentation
 
-[electronstudio.github.io/sdl2gdx/](https://electronstudio.github.io/sdl2gdx/)
+* [API docs](https://electronstudio.github.io/sdl2gdx/)
+* [Hotplug example](src/uk/co/electronstudio/sdl2gdx/tests/SDLHotplugTest.java)
+* [GUI example](src/uk/co/electronstudio/sdl2gdx/tests/SDLTest.java)
+
 
 ## You might also like
 * [Jamepad](https://github.com/williamahartman/Jamepad) - Java SDL Joystick library
