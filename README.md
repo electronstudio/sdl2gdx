@@ -62,7 +62,9 @@ project(":desktop") {
 }
 ```
 
-This will use SDL under the hood for all your desktop controllers.
+This will use SDL under the hood for all your desktop controllers.  That's it, done!
+
+### But but but
 
 But what if you want to use a feature of SDL that is not supported by the LibGDX Controller API, e.g. rumble?  Then you have a couple of options:
 
