@@ -10,14 +10,7 @@ import org.libsdl.SDL_Error;
 public class SDLHotplugTest {
     static Controller recent;
     public static void main(String[] args){
-
-       // ControllerManager c = new ControllerManager();
-
-
-//        System.out.println(SDL.SDL_GetError());
-
         SDL2ControllerManager manager = new SDL2ControllerManager();
-
 
         manager.addListener(new ControllerListener() {
             @Override
