@@ -32,7 +32,6 @@ buildscript{
     repositories {
 +        jcenter()
     }
-}
 ```
 
 ### For a project not using LibGDX
@@ -63,16 +62,16 @@ project(":desktop") {
 ```
 
 This will use SDL under the hood for all your desktop controllers.  That's it, done, with
-no changes to your code!  See LibGDX docs for how to use controllers.
+no changes to your code!  See [LibGDX docs](https://github.com/libgdx/libgdx/wiki/Controllers) for how to use controllers.
 
 ### But but but
 
-But what if you want to use a feature of SDL that is not supported by the LibGDX Controller API, e.g. rumble?  You can't, because LibGDX Controller doesn't support that.  [So then you have a couple of options](ADVANCED.md)
+But what if you want to use a feature of SDL that is not supported by the LibGDX Controller API, e.g. rumble?  You can't, because LibGDX Controller doesn't support that.  See [ADVANCED](ADVANCED.md).
 
 ## Documentation
 
 * [API docs](https://electronstudio.github.io/sdl2gdx/)
-* [Hotplug example](src/uk/co/electronstudio/sdl2gdx/tests/SDLHotplugTest.java)
+* [Hotplug CLI example](src/uk/co/electronstudio/sdl2gdx/tests/SDLHotplugTest.java)
 * [GUI example](src/uk/co/electronstudio/sdl2gdx/tests/SDLTest.java)
 
 
@@ -88,4 +87,4 @@ problem using it anywhere you use OpenJDK.
 
 ## Building from source
 
-See [BUILDING](BUILDING.md)
+See [BUILDING](BUILDING.md).
