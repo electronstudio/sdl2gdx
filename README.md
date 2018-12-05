@@ -25,7 +25,7 @@ Compared to the default LibGDX Controller implementation:
 
 ## How
 
-### LibGDX desktop project (the easy way)
+Add the repo if you don't have it in your build.gradle already
 
 ```diff
 buildscript{
@@ -33,6 +33,23 @@ buildscript{
 +        jcenter()
     }
 }
+```
+
+### For a project not using LibGDX
+
+```diff
+    dependencies {
++       compile "uk.co.electronstudio.sdl2gdx:sdl2gdx:1.0.+"
+    }
+}
+```
+
+See examples and docs below.
+
+
+### For a LibGDX desktop project
+
+```diff
 project(":desktop") {
     dependencies {
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
@@ -45,11 +62,13 @@ project(":desktop") {
 }
 ```
 
-But what if you want to use a feature not supported by the LibGDX API, e.g. rumble?
+This will use SDL under the hood for all your desktop controllers.
 
-### LibGDX core project / non-LibGDX project
+But what if you want to use a feature of SDL that is not supported by the LibGDX Controller API, e.g. rumble?  Then you have a couple of options:
 
-You can make your project depend on SDLJava.
+#### 1 LibGDX core project
+
+You can make your core subproject depend on sdl2gdx.
 
 ```diff
 project(":core") {
@@ -60,8 +79,8 @@ project(":core") {
 ```
 
 You can then create your own SDL2ControllerManager,
-which is just like ControllerManager but with more features.  Works for LibGDX and non-LibGDX projects.
- This makes your project less portable, i.e. won't work on mobile.
+(which is just like ControllerManager but with more features).  Typecast to SDL2Controller
+when you need to access the SDL2 APIs.
 
 ```java
   SDL2ControllerManager controllerManager = new SDL2ControllerManager();
@@ -69,9 +88,16 @@ which is just like ControllerManager but with more features.  Works for LibGDX a
   controller.rumble(1.0f,1.0f,500);
 ```
 
-### Reflection
+Unforunately a GDX core subproject
+is not supposed to have native dependencies, so doing this will break other subprojects, e.g.
+mobile.
+                                                    
 
-Slower, unsafe, but avoids dependencies in your core project so your mobile projects still work.
+#### 2 Reflection
+
+Add the dependency to your desktop subproject build, not core.  Then in your core project,
+whenever you want to access an SDL feature, use reflection.
+
 ```java
 Method method = null;
 Controller controller = Controllers.getControllers().get(0);
@@ -84,6 +110,14 @@ try {
     e.printStackTrace();
 }    
 ```
+
+This is slower and unsafe, but avoids dependencies in your core project so your mobile projects still work.
+
+#### 3 Wrapper
+
+The 'proper' way to do it would be to write an interface around SDL2ControllerManager and then
+provide separate jars, one with the SDL native implementation to be used on desktop and one with a noop implementation for mobile.  But then you aren't using GDX Controller API, you're using a similiar but
+incompatible API.  And if you're doing that, maybe you'd prefer to just call SDL directly?  PRs and suggestions welcome.
 
 ## Documentation
 
