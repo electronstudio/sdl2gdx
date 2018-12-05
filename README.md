@@ -1,14 +1,14 @@
-# Java SDL - GDX Controllers
+# sdl2gdx (Java SDL & GDX Controllers)
 
 Plug plug plug, this library was made for [RetroWar 8bit Party Battle](http://retrowar.net)!
 
 ## What
 
 This library provides APIs at three layers:
-1. A Java wrapper around SDL.  Currently we wrap most of Joystick and GameController.  PRs to wrap further APIs are welcome.  This wrapper is as close to the C source as
+1. [A Java wrapper around SDL](https://electronstudio.github.io/sdl2gdx/org/libsdl/SDL.html).  Currently we wrap most of Joystick and GameController.  PRs to wrap further APIs are welcome.  This wrapper is as close to the C source as
 possible, so you should be able to port any SDL examples with no changes.
-2. An OO wrapper on top of layer 1.  The same functions as provided by SDL, but with a class based API to make them more friendly to use.
-3. An implementation of LibGDX Controller API on top of layer 2.  You can slot this straight in to any LibGDX app, or you can use it directly in a non-LibGDX app.
+2. [An OO wrapper](https://electronstudio.github.io/sdl2gdx/org/libsdl/SDL_Joystick.html) on top of layer 1.  The same functions as provided by SDL, but with a class based API to make them more friendly to use.
+3. [An implementation of LibGDX Controller API](https://electronstudio.github.io/sdl2gdx/uk/co/electronstudio/sdl2gdx/SDL2Controller.html) on top of layer 2.  You can slot this straight in to any LibGDX app, or you can use it directly in a non-LibGDX app.
 
 Thanks to [Jamepad](https://github.com/williamahartman/Jamepad) by William Harman for providing the basis, native build system and inspiration for this project.
 
