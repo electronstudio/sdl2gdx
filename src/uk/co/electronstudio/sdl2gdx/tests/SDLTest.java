@@ -8,6 +8,8 @@ import org.libsdl.SDL_Error;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -16,10 +18,13 @@ import java.util.Arrays;
  * A quick and dirty interface to check if a controller is working. I hope you like swing!
  */
 public class SDLTest {
-    public static int NUM_CONTROLLERS = 4;
+    public static int NUM_CONTROLLERS = 5;
+    public static SDL2ControllerManager controllerManager;
+    public volatile static boolean  requestRestart = false;
+    static JCheckBox xinput = new JCheckBox("XInput enable");
 
     public static void main(String[] args) {
-        SDL2ControllerManager controllerManager = new SDL2ControllerManager();
+        init();
 
         //rumbleExample(controllerManager);
         //reflectionExample(controllerManager);
@@ -29,11 +34,25 @@ public class SDLTest {
         SDLInfoPanel[] controllerTabs = setup(tabbedPane, testFrame);
 
         while (true) {
-            mainLoop(controllerManager, testFrame, controllerTabs);
+            mainLoop(testFrame, controllerTabs);
         }
     }
 
-    private static void mainLoop(SDL2ControllerManager controllerManager, JFrame testFrame, SDLInfoPanel[] controllerTabs) {
+    private static void init() {
+        if(xinput.isSelected()){
+            SDL.SDL_SetHint("SDL_XINPUT_ENABLED", "1");
+        }else{
+            SDL.SDL_SetHint("SDL_XINPUT_ENABLED", "0");
+        }
+        controllerManager = new SDL2ControllerManager();
+    }
+
+    private static void mainLoop(JFrame testFrame, SDLInfoPanel[] controllerTabs) {
+        if(requestRestart){
+            controllerManager.close();
+            init();
+            requestRestart=false;
+        }
         try {
             Thread.sleep(30);
         } catch (InterruptedException e) {
@@ -55,7 +74,7 @@ public class SDLTest {
     private static SDLInfoPanel[] setup(JTabbedPane tabbedPane, JFrame testFrame) {
         testFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         testFrame.setLocationRelativeTo(null);
-        testFrame.setMinimumSize(new Dimension(640, 350));
+        testFrame.setMinimumSize(new Dimension(1000, 350));
         testFrame.setResizable(true);
         testFrame.setVisible(true);
 
@@ -63,8 +82,8 @@ public class SDLTest {
         for (int i = 0; i < NUM_CONTROLLERS; i++) {
             controllerTabs[i] = new SDLInfoPanel();
             tabbedPane.add("   Controller " + (i + 1) + "   ", controllerTabs[i]);
-
         }
+        tabbedPane.add("Options", new OptionPanel());
         testFrame.setContentPane(tabbedPane);
         return controllerTabs;
     }
@@ -180,6 +199,53 @@ public class SDLTest {
             axes.removeAll();
             buttons.removeAll();
         }
+    }
+
+    public static class OptionPanel extends JPanel {
+        private JPanel title;
+
+        private JButton restartButton;
+        private JLabel titleLabel;
+
+        public OptionPanel() {
+            setLayout(new BorderLayout());
+
+            title = new JPanel();
+
+
+            JPanel panel = new JPanel();
+            restartButton = new JButton("Restart SDL");
+            restartButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    requestRestart=true;
+                }
+            });
+
+
+
+
+            panel.add(restartButton);
+            panel.add(xinput);
+
+
+            title.setLayout(new BoxLayout(title, BoxLayout.Y_AXIS));
+            title.setAlignmentX(Component.CENTER_ALIGNMENT);
+            titleLabel = new JLabel();
+            title.add(titleLabel);
+
+            JPanel middlePanel = new JPanel();
+            middlePanel.setLayout(new BoxLayout(middlePanel, BoxLayout.Y_AXIS));
+            middlePanel.add(title);
+
+
+            add(middlePanel);
+            add(panel, BorderLayout.SOUTH);
+        }
+
+
+
+
     }
 
 }

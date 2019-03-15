@@ -290,10 +290,29 @@ final public class SDL {
         return SDL_Init(flags);
     */
 
-    public static native void SDL_SetHints(); /*
-       SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
-       SDL_SetHint(SDL_HINT_ACCELEROMETER_AS_JOYSTICK, "0");
-       SDL_SetHint(SDL_HINT_MAC_BACKGROUND_APP, "1");
+    public static native int SDL_InitSubSystem(int flags); /*
+        return SDL_InitSubSystem(flags);
+    */
+
+
+    public static native void SDL_QuitSubSystem(int flags); /*
+        SDL_QuitSubSystem(flags);
+    */
+
+    public static native int SDL_WasInit(int flags); /*
+        return SDL_WasInit(flags);
+    */
+
+    /**
+     *  This function cleans up all initialized subsystems. You should
+     *  call it upon all exit conditions.
+     */
+    public static native void SDL_Quit(); /*
+        SDL_Quit();
+    */
+
+    public static native boolean SDL_SetHint(String name, String value); /*
+       return (SDL_SetHint(name, value)==SDL_TRUE);
     */
 
     public static int SDL_INIT_TIMER = SDL_INIT_TIMER();

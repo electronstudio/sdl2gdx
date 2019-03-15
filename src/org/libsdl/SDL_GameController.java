@@ -1,6 +1,7 @@
 package org.libsdl;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -75,14 +76,24 @@ public final class SDL_GameController {
      * @throws IOException if the file cannot be read, copied to a temp folder, or deleted.
      * @throws IllegalStateException if the mappings cannot be applied to SDL
      */
-    public static boolean addMappingsFromFile(String path) throws IOException, IllegalStateException, SDL_Error {
+    public static boolean addMappingsFromFile(String path, Class sourceClass) throws IOException, IllegalStateException, SDL_Error {
         /*
         Copy the file to a temp folder. SDL can't read files held in .jars, and that's probably how
         most people would use this library.
          */
-        Path extractedLoc = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir"), path);
-        Files.copy(ClassLoader.getSystemResourceAsStream(path), extractedLoc,
-                StandardCopyOption.REPLACE_EXISTING);
+        Path extractedLoc =  Files.createTempFile(null, null).toAbsolutePath();
+        InputStream source = null;
+        if(sourceClass!=null) {
+            try {
+                source = sourceClass.getResourceAsStream(path);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        if(source==null) source = ClassLoader.getSystemResourceAsStream(path);
+        if(source==null) throw new IOException("Cannot open resource from classpath "+path);
+
+        Files.copy(source, extractedLoc, StandardCopyOption.REPLACE_EXISTING);
 
         System.out.println("EXTRACTED LOC "+extractedLoc.toString());
 
@@ -91,6 +102,10 @@ public final class SDL_GameController {
         Files.delete(extractedLoc);
 
         return (intToBoolean(result));
+    }
+
+    public static boolean addMappingsFromFile(String path) throws IOException, IllegalStateException, SDL_Error{
+        return addMappingsFromFile(path, null);
     }
 
 
