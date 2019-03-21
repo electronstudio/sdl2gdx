@@ -21,7 +21,8 @@ public class SDLTest {
     public static int NUM_CONTROLLERS = 5;
     public static SDL2ControllerManager controllerManager;
     public volatile static boolean  requestRestart = false;
-    static JCheckBox xinput = new JCheckBox("XInput enable");
+ 
+    static JComboBox inputPref = new JComboBox(new SDL2ControllerManager.InputPreference[]{SDL2ControllerManager.InputPreference.XINPUT, SDL2ControllerManager.InputPreference.DIRECT_INPUT, SDL2ControllerManager.InputPreference.RAW_INPUT});
 
     public static void main(String[] args) {
         init();
@@ -39,12 +40,8 @@ public class SDLTest {
     }
 
     private static void init() {
-        if(xinput.isSelected()){
-            SDL.SDL_SetHint("SDL_XINPUT_ENABLED", "1");
-        }else{
-            SDL.SDL_SetHint("SDL_XINPUT_ENABLED", "0");
-        }
-        controllerManager = new SDL2ControllerManager();
+
+        controllerManager = new SDL2ControllerManager((SDL2ControllerManager.InputPreference) inputPref.getSelectedItem());
     }
 
     private static void mainLoop(JFrame testFrame, SDLInfoPanel[] controllerTabs) {
@@ -226,7 +223,9 @@ public class SDLTest {
 
 
             panel.add(restartButton);
-            panel.add(xinput);
+            panel.add(inputPref);
+           // panel.add(xinput);
+           // panel.add(rawinput);
 
 
             title.setLayout(new BoxLayout(title, BoxLayout.Y_AXIS));
