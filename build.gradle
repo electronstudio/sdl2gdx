@@ -159,7 +159,7 @@ publishing {
             }
         }
     }
-    publish.dependsOn jar, sourcesJar, javadocJar, generatePomFileForMavenPublicationPublication
+    publish.dependsOn jar, sourcesJar, javadocJar//, generatePomFileForMavenPublicationPublication
 }
 
 String keyString = ''
