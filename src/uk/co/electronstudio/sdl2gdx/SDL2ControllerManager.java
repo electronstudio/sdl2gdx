@@ -153,10 +153,10 @@ public class SDL2ControllerManager implements ControllerManager {
         System.out.println("disconnected " + controller);
         controllers.removeValue(controller, false);
         connectedInstanceIds.removeValue(controller.joystick.instanceID().id);
-        controller.close();
         for (ControllerListener listener : listeners) {
             listener.disconnected(controller);
         }
+        controller.close();
     }
 
     void axisChanged(SDL2Controller controller, int axisCode, float value) {
