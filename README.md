@@ -1,6 +1,8 @@
-# sdl2gdx (Java SDL & GDX Controllers)
+# Advert
 
-Plug plug plug, this library was made for [RetroWar 8bit Party Battle](http://retrowar.net)!
+[RetroWar: 8-bit Party Battle](https://retrowar.net) is out now.  Defeat up to 15 of your friends in a tournament of 80s-inspired retro mini games.
+
+# sdl2gdx (Java SDL & GDX Controllers)
 
 ## What
 
