@@ -33,14 +33,16 @@ public class SDL2Controller implements Controller {
 
 		joystick = SDL_Joystick.JoystickOpen(device_index);
 
-		axisState = new float[joystick.numAxes()];
 		buttonState = new boolean[joystick.numButtons()];
 		hatState = new PovDirection[joystick.numHats()];
 
 		if(SDL.SDL_IsGameController(device_index)) {
 			controller = SDL_GameController.GameControllerOpen(device_index);
+			// Always 6 axes for an SDL2 GameController
+			axisState = new float[6];
 		}else{
 			controller = null;
+			axisState = new float[joystick.numAxes()];
 		}
 		System.out.println("joystick "+joystick+" controller "+controller);
 		if(joystick==null && controller==null) throw new SDL_Error();
