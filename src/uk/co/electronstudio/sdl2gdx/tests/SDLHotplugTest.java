@@ -9,12 +9,13 @@ import com.badlogic.gdx.math.Vector3;
 import org.libsdl.SDL_Error;
 
 public class SDLHotplugTest {
-    static Controller recent;
+    private static Controller recent;
+    @SuppressWarnings("InfiniteLoopStatement")
     public static void main(String[] args){
         SDL.SDL_SetHint("SDL_XINPUT_ENABLED", "0");
         SDL2ControllerManager manager = new SDL2ControllerManager();
 
-        manager.addListener(new ControllerListener() {
+        manager.addListenerAndRunForConnectedControllers(new ControllerListener() {
             @Override
             public void connected(Controller controller) {
                 System.out.println("*** CONNECTED "+controller);
@@ -68,6 +69,7 @@ public class SDLHotplugTest {
                 return false;
             }
         });
+
 
         while (true){
             try {

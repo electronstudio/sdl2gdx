@@ -14,14 +14,12 @@ import static uk.co.electronstudio.sdl2gdx.SDL2ControllerManager.InputPreference
 
 public class SDL2ControllerManager implements ControllerManager {
 
-    final Array<Controller> controllers = new Array<>();
-    final Array<Controller> polledControllers = new Array<>();
-    final Array<Controller> disconnectedControllers = new Array<>();
-    final IntArray connectedInstanceIds = new IntArray(128);
-    //final Array<SDL_JoystickID> connectedInstanceIDs = new Array<>();
-    final Array<ControllerListener> listeners = new Array<ControllerListener>();
+    private final Array<Controller> controllers = new Array<>();
+    private final Array<Controller> polledControllers = new Array<>();
+    private final IntArray connectedInstanceIds = new IntArray(128);
+    private final Array<ControllerListener> listeners = new Array<>();
 
-    boolean running = true;
+    private boolean running = true;
 
     public SDL2ControllerManager() {
         this(XINPUT);
@@ -32,12 +30,6 @@ public class SDL2ControllerManager implements ControllerManager {
     }
 
     public SDL2ControllerManager(InputPreference inputPreference) {
-//		for(int i = GLFW.GLFW_JOYSTICK_1; i < GLFW.GLFW_JOYSTICK_LAST; i++) {
-//			if(GLFW.glfwJoystickPresent(i)) {
-//				controllers.add(new SDL2Controller(this, i));
-//			}
-//		}
-
         SDL.SDL_SetHint("SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS", "1");
         SDL.SDL_SetHint("SDL_ACCELEROMETER_AS_JOYSTICK", "0");
         SDL.SDL_SetHint("SDL_MAC_BACKGROUND_APP", "1");
@@ -110,26 +102,8 @@ public class SDL2ControllerManager implements ControllerManager {
 //				System.out.println("connectedInstanceIds "+connectedInstanceIds+" does not contain "+id);
                 connected(new SDL2Controller(this, i));
             }
-//			((SDL2Controller)controller).joystick.instanceID().equals()
-//			SDL_Joystick = SDL_Joystick.
-//			SDL_JoystickID id =
         }
 
-//		for(int i = GLFW.GLFW_JOYSTICK_1; i < GLFW.GLFW_JOYSTICK_LAST; i++) {
-//			if(GLFW.glfwJoystickPresent(i)) {
-//				boolean alreadyUsed = false;
-//				for(int j = 0; j < controllers.size; j++) {
-//					if(((SDL2Controller)controllers.get(j)).index == i) {
-//						alreadyUsed = true;
-//						break;
-//					}
-//				}
-//				if(!alreadyUsed) {
-//					SDL2Controller controller = new SDL2Controller(this, i);
-//					connected(controller);
-//				}
-//			}
-//		}
 
         polledControllers.addAll(controllers);
         for (Controller controller : polledControllers) {
@@ -154,6 +128,13 @@ public class SDL2ControllerManager implements ControllerManager {
         listeners.add(listener);
     }
 
+    public void addListenerAndRunForConnectedControllers(ControllerListener listener){
+        for(Controller controller : controllers){
+            listener.connected(controller);
+        }
+        addListener(listener);
+    }
+
     @Override
     public void removeListener(ControllerListener listener) {
         listeners.removeValue(listener, true);
@@ -164,7 +145,7 @@ public class SDL2ControllerManager implements ControllerManager {
         listeners.clear();
     }
 
-    void connected(SDL2Controller controller) {
+    private void connected(SDL2Controller controller) {
         System.out.println("connected " + controller);
         controllers.add(controller);
         connectedInstanceIds.add(controller.joystick.instanceID().id);
@@ -173,7 +154,7 @@ public class SDL2ControllerManager implements ControllerManager {
         }
     }
 
-    void disconnected(SDL2Controller controller) {
+    private void disconnected(SDL2Controller controller) {
         System.out.println("disconnected " + controller);
         controllers.removeValue(controller, false);
         connectedInstanceIds.removeValue(controller.joystick.instanceID().id);
