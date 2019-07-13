@@ -15,7 +15,7 @@ import static org.libsdl.SDL.*;
 
 // TODO implement native SDL events.  Tried but they don't seem to work reliably on MacOS!
 
-public class SDL2Controller implements Controller {
+public class SDL2Controller implements RumbleController {
 	final SDL2ControllerManager manager;
 	final Array<ControllerListener> listeners = new Array<ControllerListener>();
 	final int device_index;
