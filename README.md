@@ -1,6 +1,6 @@
 # Advert
 
-[RetroWar: 8-bit Party Battle](https://retrowar.net) is out now.  Defeat up to 15 of your friends in a tournament of 80s-inspired retro mini games.
+[RetroWar: 8-bit Party Battle](https://store.steampowered.com/app/664240/RetroWar_8bit_Party_Battle/?git) is out now.  Defeat up to 15 of your friends in a tournament of 80s-inspired retro mini games.
 
 # sdl2gdx (Java SDL & GDX Controllers)
 
