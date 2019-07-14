@@ -2,9 +2,9 @@ package uk.co.electronstudio.sdl2gdx.tests;
 
 import com.badlogic.gdx.controllers.Controller;
 import org.libsdl.SDL;
+import org.libsdl.SDL_Error;
 import uk.co.electronstudio.sdl2gdx.SDL2Controller;
 import uk.co.electronstudio.sdl2gdx.SDL2ControllerManager;
-import org.libsdl.SDL_Error;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,7 +20,7 @@ import java.util.Arrays;
 public class SDLTest {
     public static int NUM_CONTROLLERS = 5;
     public static SDL2ControllerManager controllerManager;
-    public volatile static boolean  requestRestart = false;
+    public volatile static boolean requestRestart = false;
     static JCheckBox xinput = new JCheckBox("XInput enable");
 
     public static void main(String[] args) {
@@ -28,6 +28,7 @@ public class SDLTest {
 
         //rumbleExample(controllerManager);
         //reflectionExample(controllerManager);
+
 
         JTabbedPane tabbedPane = new JTabbedPane();
         JFrame testFrame = new JFrame();
@@ -39,19 +40,19 @@ public class SDLTest {
     }
 
     private static void init() {
-        if(xinput.isSelected()){
+        if (xinput.isSelected()) {
             SDL.SDL_SetHint("SDL_XINPUT_ENABLED", "1");
-        }else{
+        } else {
             SDL.SDL_SetHint("SDL_XINPUT_ENABLED", "0");
         }
         controllerManager = new SDL2ControllerManager();
     }
 
     private static void mainLoop(JFrame testFrame, SDLInfoPanel[] controllerTabs) {
-        if(requestRestart){
+        if (requestRestart) {
             controllerManager.close();
             init();
-            requestRestart=false;
+            requestRestart = false;
         }
         try {
             Thread.sleep(30);
@@ -113,6 +114,7 @@ public class SDLTest {
         private JPanel title;
         private JPanel axes;
         private JPanel buttons;
+        private JPanel pov;
         private JSlider leftRumble, rightRumble;
         private JButton vibrateButton;
         private JLabel titleLabel;
@@ -123,6 +125,7 @@ public class SDLTest {
             title = new JPanel();
             axes = new JPanel();
             buttons = new JPanel();
+            pov = new JPanel();
 
             JPanel vibratePanel = new JPanel();
             vibrateButton = new JButton("Rumble");
@@ -143,6 +146,7 @@ public class SDLTest {
             middlePanel.setLayout(new BoxLayout(middlePanel, BoxLayout.Y_AXIS));
             middlePanel.add(title);
             middlePanel.add(axes);
+            middlePanel.add(pov);
             middlePanel.add(buttons);
 
             add(middlePanel);
@@ -183,10 +187,13 @@ public class SDLTest {
 
                 });
 
+                pov.removeAll();
+                pov.add(new JLabel(c.getPov(0).toString()));
+
             } catch (SDL_Error e) {
                 e.printStackTrace();
 
-                titleLabel.setText("a Jamepad runtime exception occurred!");
+                titleLabel.setText("SDL error occurred!");
                 axes.removeAll();
                 buttons.removeAll();
 
@@ -218,11 +225,9 @@ public class SDLTest {
             restartButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    requestRestart=true;
+                    requestRestart = true;
                 }
             });
-
-
 
 
             panel.add(restartButton);
@@ -242,8 +247,6 @@ public class SDLTest {
             add(middlePanel);
             add(panel, BorderLayout.SOUTH);
         }
-
-
 
 
     }
