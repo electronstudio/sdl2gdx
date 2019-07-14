@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntArray;
 import org.libsdl.*;
 
-import static uk.co.electronstudio.sdl2gdx.SDL2ControllerManager.InputPreference.XINPUT;
+import static uk.co.electronstudio.sdl2gdx.SDL2ControllerManager.InputPreference.*;
 
 public class SDL2ControllerManager implements ControllerManager {
 
@@ -22,7 +22,18 @@ public class SDL2ControllerManager implements ControllerManager {
     private boolean running = true;
 
     public SDL2ControllerManager() {
-        this(XINPUT);
+        this(getInputPreferenceProperty());
+    }
+
+    private static InputPreference getInputPreferenceProperty() {
+        String ip = System.getProperty("SDL.input");
+        if(ip==null) return XINPUT;
+        switch (ip){
+            case "XINPUT": return XINPUT;
+            case "RAW_INPUT": return RAW_INPUT;
+            case "DIRECT_INPUT": return DIRECT_INPUT;
+            default: return XINPUT;
+        }
     }
 
     public enum InputPreference{

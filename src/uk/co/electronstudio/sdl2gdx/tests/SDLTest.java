@@ -40,7 +40,8 @@ public class SDLTest {
     }
 
     private static void init() {
-
+        //System.setProperty("SDL.input","DIRECT_INPUT");
+        //controllerManager = new SDL2ControllerManager();
         controllerManager = new SDL2ControllerManager((SDL2ControllerManager.InputPreference) inputPref.getSelectedItem());
     }
 
