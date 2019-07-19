@@ -1,6 +1,6 @@
 # Advert
 
-[RetroWar: 8-bit Party Battle](https://retrowar.net) is out now.  Defeat up to 15 of your friends in a tournament of 80s-inspired retro mini games.
+[RetroWar: 8-bit Party Battle](https://store.steampowered.com/app/664240/RetroWar_8bit_Party_Battle/?git) is out now.  Defeat up to 15 of your friends in a tournament of 80s-inspired retro mini games.
 
 # sdl2gdx (Java SDL & GDX Controllers)
 
@@ -24,6 +24,7 @@ Compared to the default LibGDX Controller implementation:
 * Datab8ase of __mappings__ for large number of controllers, so you don't have to worry about it.
 * SDL is recommended by Valve as second best way to do input for __Steam__ (after Steam Input of course!)
 * Supports __Nintendo__ and __Sony__ controllers using USB drivers taken from Steam.
+* Supports more than 4 XInput controllers (use version `1.0.3-jimbly-jimbly` for this branch)
 
 ## How
 
@@ -66,9 +67,31 @@ project(":desktop") {
 This will use SDL under the hood for all your desktop controllers.  That's it, done, with
 no changes to your code!  See [LibGDX docs](https://github.com/libgdx/libgdx/wiki/Controllers) for how to use controllers.
 
-### But but but
+### But but but rumble
 
-But what if you want to use a feature of SDL that is not supported by the LibGDX Controller API, e.g. rumble?  You can't, because LibGDX Controller doesn't support that.  See [ADVANCED](ADVANCED.md).
+But what if you want to use a feature of SDL that is not supported by the LibGDX Controller API, e.g. rumble?
+
+Add this file `RumbleController.java` to your core project:
+
+```
+package uk.co.electronstudio.sdl2gdx;
+import com.badlogic.gdx.controllers.Controller;
+
+public interface RumbleController extends Controller {
+    boolean rumble(float leftMagnitude, float rightMagnitude, int duration_ms);
+}
+
+```
+
+Then when you want to use rumble, make sure you're on Desktop platform and typecast:
+
+```
+if(Gdx.app.getType() == Application.ApplicationType.Desktop){
+    RumbleController controller = (RumbleController) Controllers.getControllers().get(0);
+    controller.rumble(1.0f,1.0f,500);
+}
+```
+
 
 ## Documentation
 

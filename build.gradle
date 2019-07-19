@@ -148,7 +148,7 @@ publishing {
             }
             groupId 'uk.co.electronstudio.sdl2gdx'
             artifactId 'sdl2gdx'
-            version '1.0.2-jimbly'
+            version '1.0.3-jimbly-jimbly'
 
             pom.withXml {
                 def root = asNode()
@@ -181,10 +181,10 @@ bintray {
         licenses = ["GPL-2.0+CE"]
         vcsUrl = 'https://github.com/electronstudio/sdl2gdx.git'
         version {
-            name = '1.0.2-jimbly'
-            desc = '1.0.2-jimbly'
+            name = '1.0.3-jimbly-jimbly'
+            desc = '1.0.3-jimbly-jimbly'
             released  = new Date()
-            vcsTag = '1.0.2-jimbly'
+            vcsTag = '1.0.3-jimbly-jimbly'
         }
     }
 }
