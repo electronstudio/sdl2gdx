@@ -10,6 +10,8 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntArray;
 import org.libsdl.*;
 
+import static uk.co.electronstudio.sdl2gdx.SDL2ControllerManager.InputPreference.*;
+
 public class SDL2ControllerManager implements ControllerManager {
 
     private final Array<Controller> controllers = new Array<>();
@@ -20,10 +22,43 @@ public class SDL2ControllerManager implements ControllerManager {
     private boolean running = true;
 
     public SDL2ControllerManager() {
+        this(getInputPreferenceProperty());
+    }
+
+    private static InputPreference getInputPreferenceProperty() {
+        String ip = System.getProperty("SDL.input");
+        if(ip==null) return XINPUT;
+        switch (ip){
+            case "XINPUT": return XINPUT;
+            case "RAW_INPUT": return RAW_INPUT;
+            case "DIRECT_INPUT": return DIRECT_INPUT;
+            default: return XINPUT;
+        }
+    }
+
+    public enum InputPreference{
+        XINPUT, DIRECT_INPUT, RAW_INPUT
+    }
+
+    public SDL2ControllerManager(InputPreference inputPreference) {
         SDL.SDL_SetHint("SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS", "1");
         SDL.SDL_SetHint("SDL_ACCELEROMETER_AS_JOYSTICK", "0");
         SDL.SDL_SetHint("SDL_MAC_BACKGROUND_APP", "1");
 
+        switch (inputPreference) {
+            case XINPUT:
+                SDL.SDL_SetHint("SDL_XINPUT_ENABLED", "1");
+                SDL.SDL_SetHint("SDL_JOYSTICK_RAWINPUT", "0");
+                break;
+            case RAW_INPUT:
+                SDL.SDL_SetHint("SDL_XINPUT_ENABLED", "1");
+                SDL.SDL_SetHint("SDL_JOYSTICK_RAWINPUT", "1");
+                break;
+            case DIRECT_INPUT:
+                SDL.SDL_SetHint("SDL_XINPUT_ENABLED", "0");
+                SDL.SDL_SetHint("SDL_JOYSTICK_RAWINPUT", "0");
+                break;
+        }
 
         if (SDL.SDL_Init(SDL.SDL_INIT_EVENTS | SDL.SDL_INIT_JOYSTICK | SDL.SDL_INIT_GAMECONTROLLER) != 0) {
             throw new RuntimeException("SDL_Init failed: " + SDL.SDL_GetError());

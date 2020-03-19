@@ -24,7 +24,7 @@ Compared to the default LibGDX Controller implementation:
 * Datab8ase of __mappings__ for large number of controllers, so you don't have to worry about it.
 * SDL is recommended by Valve as second best way to do input for __Steam__ (after Steam Input of course!)
 * Supports __Nintendo__ and __Sony__ controllers using USB drivers taken from Steam.
-* Supports more than 4 XInput controllers (use version `1.0.2-jimbly` for this branch)
+* Supports more than 4 XInput controllers (use version `1.0.3-jimbly-jimbly` for this branch)
 
 ## How
 
