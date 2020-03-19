@@ -20,8 +20,10 @@ final public class SDL {
         SDL_JoystickClose((SDL_Joystick *) ptr);
     */
 
-    // TODO
-    //  public static native SDL_JoystickCurrentPowerLevel
+
+    public static native int SDL_JoystickCurrentPowerLevel(long ptr);/*
+            return SDL_JoystickCurrentPowerLevel((SDL_Joystick *) ptr);
+    */
 
     public static native int SDL_JoystickEventState(int state); /*
         return SDL_JoystickEventState(state);
@@ -191,6 +193,16 @@ final public class SDL {
             SDL_HAT_RIGHTDOWN = (SDL_HAT_RIGHT|SDL_HAT_DOWN),
             SDL_HAT_LEFTUP = (SDL_HAT_LEFT|SDL_HAT_UP),
             SDL_HAT_LEFTDOWN =  (SDL_HAT_LEFT|SDL_HAT_DOWN);
+
+
+    public static final int SDL_JOYSTICK_POWER_UNKNOWN = -1,
+                SDL_JOYSTICK_POWER_EMPTY = 0,   /* <= 5% */
+                SDL_JOYSTICK_POWER_LOW = 1,     /* <= 20% */
+                SDL_JOYSTICK_POWER_MEDIUM = 2,  /* <= 70% */
+                SDL_JOYSTICK_POWER_FULL = 3,    /* <= 100% */
+                SDL_JOYSTICK_POWER_WIRED = 4,
+                SDL_JOYSTICK_POWER_MAX = 5;
+
 
     public static native int SDL_GameControllerAddMapping(String mappingString);/*
         return SDL_GameControllerAddMapping(mappingString);

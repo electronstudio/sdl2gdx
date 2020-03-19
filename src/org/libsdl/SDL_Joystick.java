@@ -163,14 +163,34 @@ public final class SDL_Joystick {
     }
 
 
-//      TODO
-//       **
-//       *  Return the battery level of this joystick
-//       */
-//
-//    public static SDL_JoystickPowerLevel SDL_JoystickCurrentPowerLevel(SDL_Joystick joystick){
-//        SDL.SDL_JoystickCurrentPowerLevel(joystick.ptr);
-//    }
+
+      /**
+       *  Return the battery level of this joystick
+       *
+       *  SDL_JOYSTICK_POWER_UNKNOWN = -1,
+       *  SDL_JOYSTICK_POWER_EMPTY = 0,
+       *  SDL_JOYSTICK_POWER_LOW =1,
+       * SDL_JOYSTICK_POWER_MEDIUM =2,
+       * SDL_JOYSTICK_POWER_FULL =3,
+       * SDL_JOYSTICK_POWER_WIRED =4,
+       * SDL_JOYSTICK_POWER_MAX =5;
+       */
+
+      enum PowerLevel{
+         UNKNOWN, EMPTY, LOW, MEDIUM, FULL, WIRED, MAX
+      }
+
+    public PowerLevel currentPowerLevel(){
+         switch (SDL.SDL_JoystickCurrentPowerLevel(ptr)){
+             case SDL.SDL_JOYSTICK_POWER_EMPTY: return PowerLevel.EMPTY;
+             case SDL.SDL_JOYSTICK_POWER_LOW: return PowerLevel.LOW;
+             case SDL.SDL_JOYSTICK_POWER_MEDIUM: return PowerLevel.MEDIUM;
+             case SDL.SDL_JOYSTICK_POWER_FULL: return PowerLevel.FULL;
+             case SDL.SDL_JOYSTICK_POWER_WIRED: return PowerLevel.WIRED;
+             case SDL.SDL_JOYSTICK_POWER_MAX: return PowerLevel.MAX;
+         }
+         return PowerLevel.UNKNOWN;
+    }
 
 
     /**

@@ -68,9 +68,9 @@ public class SDLHotplugTest {
         while (true){
             try {
                 manager.pollState();
-                if(recent!=null){
-                    System.out.println(recent.getButton(0));
-                }
+//                if(recent!=null){
+//                    System.out.println(recent.getButton(0));
+//                }
                 try {
                     Thread.sleep(16);
                 } catch (InterruptedException e) {
