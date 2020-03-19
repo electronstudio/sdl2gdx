@@ -49,8 +49,8 @@ brew install ant mingw-w64
 You  need to install cross-compiled Windows 32 and 64 bit versions of SDL, e.g.
 
 ```
-./configure --host=i686-w64-mingw32 ; make ; sudo make install
-./configure --host=x86_64-w64-mingw32 ; make ; sudo make install
+make clean; ./configure --host=i686-w64-mingw32 --disable-audio --disable-render --disable-filesystem ; make -j 8; sudo make install
+make clean; ./configure --host=x86_64-w64-mingw32 --disable-audio --disable-render --disable-filesystem ; make -j 8; sudo make install
 ```
 
 sdl2-config is assumed to be in /usr/local/cross-tools/ if it is not found there you will need to edit JamepadNativesBuild.java with the correct path.
@@ -64,7 +64,7 @@ The MacOS binaries currently must be built on MacOS. (You can build the Windows 
 or build SDL yourself:
 
 ```
-./configure --disable-audio --disable-render --disable-power --disable-filesystem --disable-video
-make ; sudo make install
+make clean; ./configure --disable-audio --disable-render --disable-filesystem
+make -j 8 ; sudo make install
 ```
 
