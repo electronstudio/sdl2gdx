@@ -66,9 +66,9 @@ class JamepadNativesBuild {
             mac64.cIncludes = new String[] {};
             //mac64.headerDirs = new String[] {"/usr/local/include/SDL2"};
             String cflags = execCmd("sdl2-config --cflags");
-            mac64.cFlags = cflags + " -c -Wall -O2 -arch x86_64 -DFIXED_POINT -fmessage-length=0 -fPIC -mmacosx-version-min=10.6";
+            mac64.cFlags = cflags + " -c -Wall -O2 -arch x86_64 -DFIXED_POINT -fmessage-length=0 -fPIC -mmacosx-version-min=10.9 -stdlib=libc++";
             mac64.cppFlags = mac64.cFlags;
-            mac64.linkerFlags = "-shared -arch x86_64 -mmacosx-version-min=10.6";
+            mac64.linkerFlags = "-shared -arch x86_64 -mmacosx-version-min=10.9";
             mac64.libraries = macLibPath +" -lm -liconv -Wl,-framework,CoreAudio -Wl,-framework,AudioToolbox -Wl,-framework,ForceFeedback -lobjc -Wl,-framework,CoreVideo -Wl,-framework,Cocoa -Wl,-framework,Carbon -Wl,-framework,IOKit -Wl,-weak_framework,QuartzCore -Wl,-weak_framework,Metal";
                     // we cant use:
                     //   execCmd("sdl2-config --static-libs").replace("-lSDL2","-l:libSDL2.a" )
@@ -91,7 +91,7 @@ class JamepadNativesBuild {
 
         //Generate native code, build scripts
         System.out.println("##### GENERATING NATIVE CODE AND BUILD SCRIPTS #####");
-        new NativeCodeGenerator().generate("src", "build/classes/main", "jni");
+        new NativeCodeGenerator().generate("src", "build/classes/java/main", "jni");
         new AntScriptGenerator().generate(
                 new BuildConfig("jamepad", "build/tmp", "libs", "jni"), win32, win64, lin64, mac64
         );

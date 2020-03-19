@@ -56,4 +56,15 @@ You  need to install cross-compiled Windows 32 and 64 bit versions of SDL, e.g.
 sdl2-config is assumed to be in /usr/local/cross-tools/ if it is not found there you will need to edit JamepadNativesBuild.java with the correct path.
 
 ## MacOS build dependencies
-The MacOS binaries currently must be built on MacOS. ()You can build the Windows ones here too with cross-compiler).  It is probably possible to build the Linux binaries also, but I haven't found a cross-compiler that works fully.
+
+The MacOS binaries currently must be built on MacOS. (You can build the Windows ones here too with cross-compiler).  It is probably possible to build the Linux binaries also, but I haven't found a cross-compiler that works fully.
+
+`brew install sdl2 ant`
+
+or build SDL yourself:
+
+```
+./configure --disable-audio --disable-render --disable-power --disable-filesystem --disable-video
+make ; sudo make install
+```
+
