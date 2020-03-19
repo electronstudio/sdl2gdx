@@ -192,6 +192,7 @@ public class SDLTest {
 
                 pov.removeAll();
                 pov.add(new JLabel(c.getPov(0).toString()));
+                pov.add(new JLabel(c.getPowerLevel().toString()));
 
             } catch (SDL_Error e) {
                 e.printStackTrace();

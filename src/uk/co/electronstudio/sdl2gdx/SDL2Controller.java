@@ -256,4 +256,20 @@ public class SDL2Controller implements RumbleController {
         return joystick.rumble(leftMagnitude, rightMagnitude, duration_ms);
     }
 
+    public enum PowerLevel{
+        UNKNOWN, EMPTY, LOW, MEDIUM, FULL, WIRED, MAX
+    }
+
+    public PowerLevel getPowerLevel(){
+        switch (joystick.currentPowerLevel()){
+            case SDL.SDL_JOYSTICK_POWER_EMPTY: return PowerLevel.EMPTY;
+            case SDL.SDL_JOYSTICK_POWER_LOW: return PowerLevel.LOW;
+            case SDL.SDL_JOYSTICK_POWER_MEDIUM: return PowerLevel.MEDIUM;
+            case SDL.SDL_JOYSTICK_POWER_FULL: return PowerLevel.FULL;
+            case SDL.SDL_JOYSTICK_POWER_WIRED: return PowerLevel.WIRED;
+            case SDL.SDL_JOYSTICK_POWER_MAX: return PowerLevel.MAX;
+        }
+        return PowerLevel.UNKNOWN;
+    }
+
 }

@@ -176,20 +176,9 @@ public final class SDL_Joystick {
        * SDL_JOYSTICK_POWER_MAX =5;
        */
 
-      enum PowerLevel{
-         UNKNOWN, EMPTY, LOW, MEDIUM, FULL, WIRED, MAX
-      }
 
-    public PowerLevel currentPowerLevel(){
-         switch (SDL.SDL_JoystickCurrentPowerLevel(ptr)){
-             case SDL.SDL_JOYSTICK_POWER_EMPTY: return PowerLevel.EMPTY;
-             case SDL.SDL_JOYSTICK_POWER_LOW: return PowerLevel.LOW;
-             case SDL.SDL_JOYSTICK_POWER_MEDIUM: return PowerLevel.MEDIUM;
-             case SDL.SDL_JOYSTICK_POWER_FULL: return PowerLevel.FULL;
-             case SDL.SDL_JOYSTICK_POWER_WIRED: return PowerLevel.WIRED;
-             case SDL.SDL_JOYSTICK_POWER_MAX: return PowerLevel.MAX;
-         }
-         return PowerLevel.UNKNOWN;
+    public int currentPowerLevel(){
+         return (SDL.SDL_JoystickCurrentPowerLevel(ptr));
     }
 
 
