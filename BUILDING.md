@@ -29,11 +29,11 @@ sdl2-config must be in the path.
 If your distro doesn't have an up to date version of SDL or you get errors, you can build it yourself from source:
 
 ```
-./configure CFLAGS="-fPIC -include src/force_link_glibc_2.5.h" CPPFLAGS="-fPIC -include src/force_link_glibc_2.5.h" 
+./configure CFLAGS="-fPIC -include src/force_link_glibc_2.5.h" CPPFLAGS="-fPIC -include src/force_link_glibc_2.5.h" --disable-audio --disable-render --disable-power --disable-filesystem --disable-video
 make ; sudo make install
 ```
 
-If you want to make the binaries smaller you can disable parts of SDL you don't need with configure flags.  (We only make use of Joystick, GameController and Events systems).  However this is not tested.  The glibc header is to allow it work on older versions of glibc than the one currently installed.
+The glibc header is to allow it work on older versions of glibc than the one currently installed.
 
 ## Windows (cross-compiled on Linux/MacOS) build dependencies
 
