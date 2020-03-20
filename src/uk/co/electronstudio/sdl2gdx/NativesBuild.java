@@ -1,11 +1,11 @@
-package com.studiohartman.jamepad;
+package uk.co.electronstudio.sdl2gdx;
 
 import com.badlogic.gdx.jnigen.*;
 import com.badlogic.gdx.jnigen.BuildTarget.TargetOs;
 
 import java.io.FileNotFoundException;
 
-class JamepadNativesBuild {
+class NativesBuild {
 
     static final String win32crossCompilePath="/usr/local/cross-tools/i686-w64-mingw32/bin/";
     static final String win64crossCompilePath="/usr/local/cross-tools/x86_64-w64-mingw32/bin/";
@@ -93,7 +93,7 @@ class JamepadNativesBuild {
         System.out.println("##### GENERATING NATIVE CODE AND BUILD SCRIPTS #####");
         new NativeCodeGenerator().generate("src", "build/classes/java/main", "jni");
         new AntScriptGenerator().generate(
-                new BuildConfig("jamepad", "build/tmp", "libs", "jni"), win32, win64, lin64, mac64
+                new BuildConfig("sdl2gdx", "build/tmp", "libs", "jni"), win32, win64, lin64, mac64
         );
         System.out.println();
 

@@ -7,11 +7,11 @@ final public class SDL {
 
     #include "SDL.h"
 
-
+    SDL_Event event;
     */
 
     static {
-        new JniGenSharedLibraryLoader().load("jamepad");
+        new JniGenSharedLibraryLoader().load("sdl2gdx");
     }
 
     // joystick.h
@@ -426,10 +426,14 @@ final public class SDL {
 
 
 
-    /*
 
-//    public static native int SDL_PollEvent(); /*
-//        return SDL_PollEvent(SDL_Event* event)
+    public static native int SDL_PollEvent(); /*
+        if (SDL_PollEvent(&event)){
+            return event.type;
+        }
+        return 0;
+     */
+
 //    */
 //
 //    public static native int SDL_PollEventResult(); /*

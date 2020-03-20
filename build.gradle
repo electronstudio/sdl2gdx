@@ -55,28 +55,28 @@ task runTester(dependsOn: classes, type: JavaExec) {
 }
 
 task linuxNatives(dependsOn: classes, type: JavaExec) {
-    main = 'com.studiohartman.jamepad.JamepadNativesBuild'
+    main = 'uk.co.electronstudio.sdl2gdx.NativesBuild'
     args = ['build-linux', 'system-SDL2']
     classpath = sourceSets.main.runtimeClasspath
     standardInput = System.in
 }
 
 task windowsNatives(dependsOn: classes, type: JavaExec) {
-    main = 'com.studiohartman.jamepad.JamepadNativesBuild'
+    main = 'uk.co.electronstudio.sdl2gdx.NativesBuild'
     args = ['build-windows',  'system-SDL2']
     classpath = sourceSets.main.runtimeClasspath
     standardInput = System.in
 }
 
 task OSXNatives(dependsOn: classes, type: JavaExec) {
-    main = 'com.studiohartman.jamepad.JamepadNativesBuild'
+    main = 'uk.co.electronstudio.sdl2gdx.NativesBuild'
     args = ['build-OSX', 'system-SDL2']
     classpath = sourceSets.main.runtimeClasspath
     standardInput = System.in
 }
 
 task allNatives(dependsOn: classes, type: JavaExec) {
-    main = 'com.studiohartman.jamepad.JamepadNativesBuild'
+    main = 'uk.co.electronstudio.sdl2gdx.NativesBuild'
     args = ['build-linux', 'build-windows', 'build-OSX']
     classpath = sourceSets.main.runtimeClasspath
     standardInput = System.in
@@ -99,7 +99,6 @@ task sourcesJar(type: Jar, dependsOn: classes) {
     from sourceSets.main.allSource
 }
 javadoc {
-    exclude 'com/studiohartman/jamepad/**'
     exclude 'com/badlogic/**'
     destinationDir = new File('docs')
     options.overview = "overview.html"
