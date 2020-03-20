@@ -29,8 +29,8 @@ sdl2-config must be in the path.
 If your distro doesn't have an up to date version of SDL or you get errors, you can build it yourself from source:
 
 ```
-./configure CFLAGS="-fPIC -include src/force_link_glibc_2.5.h" CPPFLAGS="-fPIC -include src/force_link_glibc_2.5.h" --disable-audio --disable-render --disable-power --disable-filesystem --disable-video
-make ; sudo make install
+make clean; ./configure CFLAGS="-fPIC -include src/force_link_glibc_2.5.h" CPPFLAGS="-fPIC -include src/force_link_glibc_2.5.h" --disable-audio --disable-render --disable-filesystem 
+make -j 8; sudo make install
 ```
 
 The glibc header is to allow it work on older versions of glibc than the one currently installed.
@@ -64,7 +64,7 @@ The MacOS binaries currently must be built on MacOS. (You can build the Windows 
 or build SDL yourself:
 
 ```
-make clean; ./configure --disable-audio --disable-render --disable-filesystem
-make -j 8 ; sudo make install
+ make clean; ./configure --disable-audio --disable-render --disable-filesystem  --enable-hidapi  ; make -j 8 ; sudo make install
+
 ```
 

@@ -203,6 +203,14 @@ final public class SDL {
                 SDL_JOYSTICK_POWER_WIRED = 4,
                 SDL_JOYSTICK_POWER_MAX = 5;
 
+    public static final int SDL_CONTROLLER_TYPE_UNKNOWN = 0,
+                SDL_CONTROLLER_TYPE_XBOX360 = 1,
+                SDL_CONTROLLER_TYPE_XBOXONE = 2,
+                SDL_CONTROLLER_TYPE_PS3 = 3,
+                SDL_CONTROLLER_TYPE_PS4 = 4,
+                SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO = 5,
+                SDL_CONTROLLER_TYPE_VIRTUAL = 6;
+
 
     public static native int SDL_GameControllerAddMapping(String mappingString);/*
         return SDL_GameControllerAddMapping(mappingString);
@@ -278,6 +286,21 @@ final public class SDL {
         return env->NewStringUTF(SDL_GameControllerNameForIndex(i));
     */
 
+    public static native long SDL_GameControllerFromPlayerIndex(int i); /*
+         return (uintptr_t)SDL_GameControllerFromPlayerIndex(i);
+    */
+
+    public static native int SDL_GameControllerGetType(long ptr); /*
+        return SDL_GameControllerGetType((SDL_GameController *)ptr);
+    */
+
+    public static native int SDL_GameControllerGetPlayerIndex(long ptr); /*
+        return SDL_GameControllerGetPlayerIndex((SDL_GameController *)ptr);
+    */
+
+    public static native void SDL_GameControllerSetPlayerIndex(long ptr, int player_index); /*
+        SDL_GameControllerSetPlayerIndex((SDL_GameController *)ptr, player_index);
+    */
 
     public static native long SDL_GameControllerOpen(int i); /*
         return (uintptr_t)SDL_GameControllerOpen(i);

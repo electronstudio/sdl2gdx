@@ -272,4 +272,26 @@ public class SDL2Controller implements RumbleController {
         return PowerLevel.UNKNOWN;
     }
 
+    public ControllerType getType(){
+        switch (controller.getType()){
+            case SDL_CONTROLLER_TYPE_XBOX360: return ControllerType.XBOX360;
+            case SDL_CONTROLLER_TYPE_XBOXONE: return ControllerType.XBOXONE;
+            case SDL_CONTROLLER_TYPE_PS3: return ControllerType.PS3;
+            case SDL_CONTROLLER_TYPE_PS4: return ControllerType.PS4;
+            case SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO: return ControllerType.NINTENDO_SWITCH_PRO;
+            case SDL_CONTROLLER_TYPE_VIRTUAL: return ControllerType.VIRTUAL;
+
+        }
+        return ControllerType.UNKNOWN;
+    }
+
+    public int getPlayerIndex(){
+        return controller.getPlayerIndex();
+    }
+
+
+    public enum ControllerType {
+      UNKNOWN, XBOX360, XBOXONE,PS3,PS4,NINTENDO_SWITCH_PRO,VIRTUAL
+    }
+
 }

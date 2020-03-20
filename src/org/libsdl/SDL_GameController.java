@@ -31,7 +31,7 @@ public final class SDL_GameController {
     }
 
     public float getAxis(int axis){
-        if(!getAttached()) return 0;
+        if(!getAttached()) return 0;  // FIXME I don't think this check is necessary
         int i = SDL.SDL_GameControllerGetAxis(ptr, axis);
         if(i<0) return i/-AXIS_MIN;
         return i/AXIS_MAX;
@@ -146,10 +146,45 @@ public final class SDL_GameController {
         return new SDL_GameController(SDL.SDL_GameControllerFromInstanceID(joyid.id));
     }
 
+    /**
+     * Return the SDL_GameController associated with a player index.
+     */
 
+    public static SDL_GameController SDL_GameControllerFromPlayerIndex(int player_index){
+        return new SDL_GameController(SDL.SDL_GameControllerFromPlayerIndex(player_index));
+    }
+
+    /**
+     *  Get the implementation dependent name of a game controller.
+     *  This can be called before any controllers are opened.
+     *  If no name can be found, this function returns NULL.
+     */
     public static String GameControllerNameForIndex(int device_index){
         return SDL.SDL_GameControllerNameForIndex(device_index);
     }
+
+    /**
+     *  Return the type of this currently opened controller
+     */
+    public int getType(){
+        return SDL.SDL_GameControllerGetType(ptr);
+    }
+
+    /**
+     *  Get the player index of an opened game controller, or -1 if it's not available
+     *
+     *  For XInput controllers this returns the XInput user index.
+     */
+    public int getPlayerIndex(){
+        return SDL.SDL_GameControllerGetPlayerIndex(ptr);
+    }
+
+    /**
+     *  Set the player index of an opened game controller
+     */
+     public void setPlayerIndex(int player_index){
+         SDL.SDL_GameControllerSetPlayerIndex(ptr, player_index);
+     }
 
     public static SDL_GameController GameControllerOpen(int i){
         return new SDL_GameController(SDL.SDL_GameControllerOpen(i));
