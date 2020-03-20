@@ -33,7 +33,6 @@ public class SDL2Controller implements RumbleController {
 
         joystick = SDL_Joystick.JoystickOpen(device_index);
 
-
         hatState = new PovDirection[joystick.numHats()];
 
         if (SDL.SDL_IsGameController(device_index)) {
@@ -47,6 +46,9 @@ public class SDL2Controller implements RumbleController {
         }
         System.out.println("joystick " + joystick + " controller " + controller);
         if (joystick == null && controller == null) throw new SDL_Error();
+
+
+
     }
 
     public boolean isConnected() {
@@ -273,20 +275,30 @@ public class SDL2Controller implements RumbleController {
     }
 
     public ControllerType getType(){
-        switch (controller.getType()){
-            case SDL_CONTROLLER_TYPE_XBOX360: return ControllerType.XBOX360;
-            case SDL_CONTROLLER_TYPE_XBOXONE: return ControllerType.XBOXONE;
-            case SDL_CONTROLLER_TYPE_PS3: return ControllerType.PS3;
-            case SDL_CONTROLLER_TYPE_PS4: return ControllerType.PS4;
-            case SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO: return ControllerType.NINTENDO_SWITCH_PRO;
-            case SDL_CONTROLLER_TYPE_VIRTUAL: return ControllerType.VIRTUAL;
-
+        if(controller != null) {
+            switch (controller.getType()) {
+                case SDL_CONTROLLER_TYPE_XBOX360:
+                    return ControllerType.XBOX360;
+                case SDL_CONTROLLER_TYPE_XBOXONE:
+                    return ControllerType.XBOXONE;
+                case SDL_CONTROLLER_TYPE_PS3:
+                    return ControllerType.PS3;
+                case SDL_CONTROLLER_TYPE_PS4:
+                    return ControllerType.PS4;
+                case SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO:
+                    return ControllerType.NINTENDO_SWITCH_PRO;
+                case SDL_CONTROLLER_TYPE_VIRTUAL:
+                    return ControllerType.VIRTUAL;
+            }
         }
         return ControllerType.UNKNOWN;
     }
 
     public int getPlayerIndex(){
-        return controller.getPlayerIndex();
+        if(controller != null) {
+            return controller.getPlayerIndex();
+        }
+        return -1;
     }
 
 

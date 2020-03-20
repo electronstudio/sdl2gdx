@@ -29,7 +29,7 @@ sdl2-config must be in the path.
 If your distro doesn't have an up to date version of SDL or you get errors, you can build it yourself from source:
 
 ```
-make clean; ./configure CFLAGS="-fPIC -include src/force_link_glibc_2.5.h" CPPFLAGS="-fPIC -include src/force_link_glibc_2.5.h" --disable-audio --disable-render --disable-filesystem 
+make clean; ./configure CFLAGS="-fPIC -include src/force_link_glibc_2.5.h" CPPFLAGS="-fPIC -include src/force_link_glibc_2.5.h" --disable-audio --disable-render --disable-filesystem  --enable-hidapi 
 make -j 8; sudo make install
 ```
 
@@ -49,8 +49,8 @@ brew install ant mingw-w64
 You  need to install cross-compiled Windows 32 and 64 bit versions of SDL, e.g.
 
 ```
-make clean; ./configure --host=i686-w64-mingw32 --disable-audio --disable-render --disable-filesystem ; make -j 8; sudo make install
-make clean; ./configure --host=x86_64-w64-mingw32 --disable-audio --disable-render --disable-filesystem ; make -j 8; sudo make install
+make clean; ./configure --host=i686-w64-mingw32 --disable-audio --disable-render --disable-filesystem  --enable-hidapi ; make -j 8; sudo make install
+make clean; ./configure --host=x86_64-w64-mingw32 --disable-audio --disable-render --disable-filesystem  --enable-hidapi ; make -j 8; sudo make install
 ```
 
 sdl2-config is assumed to be in /usr/local/cross-tools/ if it is not found there you will need to edit JamepadNativesBuild.java with the correct path.
@@ -64,7 +64,7 @@ The MacOS binaries currently must be built on MacOS. (You can build the Windows 
 or build SDL yourself:
 
 ```
- make clean; ./configure --disable-audio --disable-render --disable-filesystem  --enable-hidapi  ; make -j 8 ; sudo make install
+make clean; ./configure --disable-audio --disable-render --disable-filesystem ; make -j 8 ; sudo make install
 
 ```
 
