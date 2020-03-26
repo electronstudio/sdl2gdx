@@ -10,12 +10,8 @@ buildscript{
 }
 
 
-
-//apply plugin: 'maven'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven-publish'
-
-
 
 
 sourceCompatibility = 1.8
@@ -37,8 +33,8 @@ repositories {
 
 dependencies {
     implementation "com.badlogicgames.gdx:gdx-jnigen:1.9.10"
-    api "com.badlogicgames.gdx:gdx:1.9.10"
-    api "com.badlogicgames.gdx:gdx-controllers:1.9.10"
+    api "com.badlogicgames.gdx:gdx:1.9.9"
+    api "com.badlogicgames.gdx:gdx-controllers:1.9.9"
 }
 
 task deleteJniFolder(type: Delete) {
@@ -147,7 +143,7 @@ publishing {
             }
             groupId 'uk.co.electronstudio.sdl2gdx'
             artifactId 'sdl2gdx'
-            version '1.0.4-beta2'
+            version '1.0.4-beta3'
 
             pom.withXml {
                 def root = asNode()
@@ -180,10 +176,10 @@ bintray {
         licenses = ["GPL-2.0+CE"]
         vcsUrl = 'https://github.com/electronstudio/sdl2gdx.git'
         version {
-            name = '1.0.4-beta2'
-            desc = '1.0.4-beta2'
+            name = '1.0.4-beta3'
+            desc = '1.0.4-beta3'
             released  = new Date()
-            vcsTag = '1.0.4-beta2'
+            vcsTag = '1.0.4-beta3'
         }
     }
 }
