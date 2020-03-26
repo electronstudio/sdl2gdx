@@ -31,6 +31,7 @@ public class SDLTest {
 
         //rumbleExample(controllerManager);
         //reflectionExample(controllerManager);
+        //testEventPoll();
 
 
         JTabbedPane tabbedPane = new JTabbedPane();
@@ -39,6 +40,25 @@ public class SDLTest {
 
         while (true) {
             mainLoop(testFrame, controllerTabs);
+        }
+    }
+
+    private static void testEventPoll(){
+        SDL.Event event = new SDL.Event();
+        event.type = 100;
+
+        while(true) {
+            if(SDL.SDL_PollEvent(event)) {
+
+                System.out.println("EVENT TYPE: " + event.type + " time "+event.timestamp);
+                if(event.type==SDL.Event.SDL_JOYDEVICEADDED){
+                    System.out.println("joydeviceadded");
+                }
+                if(event.type==SDL.Event.SDL_JOYDEVICEREMOVED){
+                    System.out.println("joydeviceremoved");
+                }
+
+            }
         }
     }
 

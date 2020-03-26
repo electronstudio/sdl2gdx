@@ -1,4 +1,4 @@
-apply plugin: "java"
+apply plugin: "java-library"
 
 buildscript{
     repositories {
@@ -16,7 +16,7 @@ apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven-publish'
 
 
-//group = 'com.github.WilliamAHartman'
+
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -36,9 +36,9 @@ repositories {
 }
 
 dependencies {
-    compile "com.badlogicgames.gdx:gdx-jnigen:1.9.10"
-    compile "com.badlogicgames.gdx:gdx:1.9.9"
-    compile "com.badlogicgames.gdx:gdx-controllers:1.9.9"
+    implementation "com.badlogicgames.gdx:gdx-jnigen:1.9.10"
+    api "com.badlogicgames.gdx:gdx:1.9.10"
+    api "com.badlogicgames.gdx:gdx-controllers:1.9.10"
 }
 
 task deleteJniFolder(type: Delete) {
@@ -85,7 +85,7 @@ task allNatives(dependsOn: classes, type: JavaExec) {
 task uberjar(dependsOn: classes, type: Jar) {
     from files(sourceSets.main.output.classesDir)
     from files(sourceSets.main.output.resourcesDir)
-    from {configurations.compile.collect {zipTree(it)}}
+    //from {configurations.compile.collect {zipTree(it)}}
 
     manifest {
         attributes 'Main-Class': 'uk.co.electronstudio.sdl2gdx.tests.SDLTest'
@@ -147,7 +147,7 @@ publishing {
             }
             groupId 'uk.co.electronstudio.sdl2gdx'
             artifactId 'sdl2gdx'
-            version '1.0.3-jimbly'
+            version '1.0.4-beta2'
 
             pom.withXml {
                 def root = asNode()
@@ -180,10 +180,10 @@ bintray {
         licenses = ["GPL-2.0+CE"]
         vcsUrl = 'https://github.com/electronstudio/sdl2gdx.git'
         version {
-            name = '1.0.3-jimbly'
-            desc = '1.0.3-jimbly'
+            name = '1.0.4-beta2'
+            desc = '1.0.4-beta2'
             released  = new Date()
-            vcsTag = '1.0.3-jimbly'
+            vcsTag = '1.0.4-beta2'
         }
     }
 }

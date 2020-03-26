@@ -1,7 +1,6 @@
 package uk.co.electronstudio.sdl2gdx;
 
 
-import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.math.Vector3;
@@ -46,7 +45,6 @@ public class SDL2Controller implements RumbleController {
         }
         System.out.println("joystick " + joystick + " controller " + controller);
         if (joystick == null && controller == null) throw new SDL_Error();
-
 
 
     }
@@ -258,24 +256,30 @@ public class SDL2Controller implements RumbleController {
         return joystick.rumble(leftMagnitude, rightMagnitude, duration_ms);
     }
 
-    public enum PowerLevel{
+    public enum PowerLevel {
         UNKNOWN, EMPTY, LOW, MEDIUM, FULL, WIRED, MAX
     }
 
-    public PowerLevel getPowerLevel(){
-        switch (joystick.currentPowerLevel()){
-            case SDL.SDL_JOYSTICK_POWER_EMPTY: return PowerLevel.EMPTY;
-            case SDL.SDL_JOYSTICK_POWER_LOW: return PowerLevel.LOW;
-            case SDL.SDL_JOYSTICK_POWER_MEDIUM: return PowerLevel.MEDIUM;
-            case SDL.SDL_JOYSTICK_POWER_FULL: return PowerLevel.FULL;
-            case SDL.SDL_JOYSTICK_POWER_WIRED: return PowerLevel.WIRED;
-            case SDL.SDL_JOYSTICK_POWER_MAX: return PowerLevel.MAX;
+    public PowerLevel getPowerLevel() {
+        switch (joystick.currentPowerLevel()) {
+            case SDL.SDL_JOYSTICK_POWER_EMPTY:
+                return PowerLevel.EMPTY;
+            case SDL.SDL_JOYSTICK_POWER_LOW:
+                return PowerLevel.LOW;
+            case SDL.SDL_JOYSTICK_POWER_MEDIUM:
+                return PowerLevel.MEDIUM;
+            case SDL.SDL_JOYSTICK_POWER_FULL:
+                return PowerLevel.FULL;
+            case SDL.SDL_JOYSTICK_POWER_WIRED:
+                return PowerLevel.WIRED;
+            case SDL.SDL_JOYSTICK_POWER_MAX:
+                return PowerLevel.MAX;
         }
         return PowerLevel.UNKNOWN;
     }
 
-    public ControllerType getType(){
-        if(controller != null) {
+    public ControllerType getType() {
+        if (controller != null) {
             switch (controller.getType()) {
                 case SDL_CONTROLLER_TYPE_XBOX360:
                     return ControllerType.XBOX360;
@@ -294,8 +298,8 @@ public class SDL2Controller implements RumbleController {
         return ControllerType.UNKNOWN;
     }
 
-    public int getPlayerIndex(){
-        if(controller != null) {
+    public int getPlayerIndex() {
+        if (controller != null) {
             return controller.getPlayerIndex();
         }
         return -1;
@@ -303,7 +307,7 @@ public class SDL2Controller implements RumbleController {
 
 
     public enum ControllerType {
-      UNKNOWN, XBOX360, XBOXONE,PS3,PS4,NINTENDO_SWITCH_PRO,VIRTUAL
+        UNKNOWN, XBOX360, XBOXONE, PS3, PS4, NINTENDO_SWITCH_PRO, VIRTUAL
     }
 
 }

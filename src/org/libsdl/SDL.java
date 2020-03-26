@@ -7,7 +7,6 @@ final public class SDL {
 
     #include "SDL.h"
 
-    SDL_Event event;
     */
 
     static {
@@ -427,11 +426,17 @@ final public class SDL {
 
 
 
-    public static native int SDL_PollEvent(); /*
+    public static native boolean SDL_PollEvent(Event jobj); /*
+        SDL_Event event;
         if (SDL_PollEvent(&event)){
-            return event.type;
+            jclass class_Event = env->GetObjectClass(jobj);
+            jfieldID id_type = env->GetFieldID(class_Event, "type", "I");
+            jfieldID id_timestamp = env->GetFieldID(class_Event, "timestamp", "I");
+            env->SetIntField(jobj, id_type, event.type);
+            env->SetIntField(jobj, id_timestamp, event.common.timestamp);
+            return JNI_TRUE;
         }
-        return 0;
+        return JNI_FALSE;
      */
 
 //    */
@@ -440,5 +445,11 @@ final public class SDL {
 //        return event
 //    */
 
+    public static class Event{
+         public static int SDL_JOYDEVICEADDED=0x605;
+         public static int SDL_JOYDEVICEREMOVED=0x606;
+         public int type;
+         public int timestamp;
+    }
 
 }
