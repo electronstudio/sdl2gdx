@@ -20,11 +20,11 @@ Compared to the default LibGDX Controller implementation:
 * __Hotplug__ works.
 * Doesn't quit working when the screenmode changes.
 * __Rumble__!
-* Can get more info, such as USB IDs and XInput Player LED number.
+* Can get more info, such as device power level and XInput Player LED number.
 * Database of __mappings__ for large number of controllers, so you don't have to worry about it.
 * SDL is recommended by Valve as second best way to do input for __Steam__ (after Steam Input of course!)
 * Supports __Nintendo__ and __Sony__ controllers using USB drivers taken from Steam.
-* Supports more than 4 XInput controllers (use version `1.0.3-jimbly-jimbly` for this branch)
+* Supports more than 4 XInput controllers
 
 ## How
 
@@ -54,24 +54,38 @@ See examples and docs below for how to call the API.
 ```diff
 project(":desktop") {
     dependencies {
-        compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-        compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
--       compile "com.badlogicgames.gdx:gdx-controllers-desktop:$gdxVersion"
--       compile "com.badlogicgames.gdx:gdx-controllers-platform:$gdxVersion:natives-desktop"
-+       compile "uk.co.electronstudio.sdl2gdx:sdl2gdx:1.0.+"
+        implementation "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+        implementation "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
+-       implementation "com.badlogicgames.gdx:gdx-controllers-desktop:$gdxVersion"
+-       implementation "com.badlogicgames.gdx:gdx-controllers-platform:$gdxVersion:natives-desktop"
     }
 }
+
+project(":core") {
+    dependencies {
+        implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
++       implementation "uk.co.electronstudio.sdl2gdx:sdl2gdx:1.0.4"
+    }
+}
+
 ```
 
-This will use SDL under the hood for all your desktop controllers.  That's it, done, with
+This will use SDL under the hood for all your controllers.  That's it, done, with
 no changes to your code!  See [LibGDX docs](https://github.com/libgdx/libgdx/wiki/Controllers) for how to use controllers.
 
-### But but but rumble
+Adding to the core project means you are free to use the additional SDL2 APIs anywhere in your code, but it won't work if
+you also have html5 or mobile projects.  In that case add sdl2gdx to just the desktop project and not the core project.
 
-But what if you want to use a feature of SDL that is not supported by the LibGDX Controller API, e.g. rumble?
+[Example LibGDX project](https://github.com/electronstudio/sdl2gdx-test)
 
-Add this file `RumbleController.java` to your core project:
+### Rumble
+
+What if you want to use a feature of SDL that is not supported by the LibGDX Controller API, e.g. rumble?
+
+If you didn't add sdl2gdx to your core project, you will need instead to create a file `RumbleController.java` in your core project:
 
 ```
 package uk.co.electronstudio.sdl2gdx;
@@ -92,6 +106,7 @@ if(Gdx.app.getType() == Application.ApplicationType.Desktop){
 }
 ```
 
+You could also typecast your Controller to SDL2Controller for other features like power level.
 
 ## Documentation
 
@@ -101,7 +116,7 @@ if(Gdx.app.getType() == Application.ApplicationType.Desktop){
 
 
 ## You might also like
-* [Jamepad](https://github.com/williamahartman/Jamepad) - Java SDL Joystick library
+* [Jamepad](https://github.com/williamahartman/Jamepad) - Alternate API for accessing sdl2gdx
 * [RetroWar-common](https://github.com/electronstudio/retrowar-common) - LibGDX extension library
 * [RetroWar](http://retrowar.net) - My game
 
