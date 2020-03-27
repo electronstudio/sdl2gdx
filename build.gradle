@@ -143,7 +143,7 @@ publishing {
             }
             groupId 'uk.co.electronstudio.sdl2gdx'
             artifactId 'sdl2gdx'
-            version '1.0.4-beta3'
+            version '1.0.4'
 
             pom.withXml {
                 def root = asNode()
@@ -176,10 +176,10 @@ bintray {
         licenses = ["GPL-2.0+CE"]
         vcsUrl = 'https://github.com/electronstudio/sdl2gdx.git'
         version {
-            name = '1.0.4-beta3'
-            desc = '1.0.4-beta3'
+            name = '1.0.4'
+            desc = '1.0.4'
             released  = new Date()
-            vcsTag = '1.0.4-beta3'
+            vcsTag = '1.0.4'
         }
     }
 }
