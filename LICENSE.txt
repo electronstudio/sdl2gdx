@@ -1,6 +1,4 @@
-GNU General Public License, version 3, with the Classpath Exception
-
-                    GNU GENERAL PUBLIC LICENSE
+         GNU GENERAL PUBLIC LICENSE WITH THE CLASSPATH EXCEPTION
                        Version 3, 29 June 2007
 
  Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
