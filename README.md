@@ -122,8 +122,8 @@ You could also typecast your Controller to SDL2Controller for other features lik
 
 ## License
 
-sdl2gdx is distributed under GPL+Classpath license, the same as OpenJDK itself, so you will have no
-problem using it anywhere you use OpenJDK.
+sdl2gdx is distributed under the GPL license with the Classpath Exception to allow linking, the same as OpenJDK itself, so you can use it
+anywhere that you use the JDK, for both free and non-free ('closed source') projects.
 
 ## Building from source
 
