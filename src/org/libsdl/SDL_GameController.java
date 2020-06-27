@@ -70,7 +70,7 @@ public final class SDL_GameController {
     //getMapping
 
     /**
-     * This method adds mappings from {@link }
+     * This method adds mappings from {@link SDL_GameControllerDB_Util}
      *
      * @throws IOException if the file cannot be read, copied to a temp folder, or deleted.
      * @throws IllegalStateException if the mappings cannot be applied to SDL
