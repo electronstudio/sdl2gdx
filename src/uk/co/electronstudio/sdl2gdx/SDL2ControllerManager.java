@@ -66,7 +66,7 @@ public class SDL2ControllerManager implements ControllerManager {
 
 
         try {
-            SDL_GameController.addMappingsFromFile("/gamecontrollerdb.txt", getClass());
+            SDL_GameController.addMappingsFromUtil();
         } catch (Exception e) {
             System.out.println("Failed to load gamecontrollerdb.txt");
             e.printStackTrace();

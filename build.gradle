@@ -33,6 +33,7 @@ repositories {
 
 dependencies {
     implementation "com.badlogicgames.gdx:gdx-jnigen:1.9.10"
+    api "com.xenoamess.cyan_potion:SDL_GameControllerDB_Util:[1.7.0,2.0.0)"
     api "com.badlogicgames.gdx:gdx:1.9.9"
     api "com.badlogicgames.gdx:gdx-controllers:1.9.9"
 }

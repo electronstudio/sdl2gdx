@@ -1,8 +1,10 @@
 package org.libsdl;
 
+import com.xenoamess.cyan_potion.sdl_game_controller_db_util.SDL_GameControllerDB_Util;
+
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -67,6 +69,24 @@ public final class SDL_GameController {
     //getStringForButton
     //getMapping
 
+    /**
+     * This method adds mappings from {@link SDL_GameControllerDB_Util}
+     *
+     * @throws IOException if the file cannot be read, copied to a temp folder, or deleted.
+     * @throws IllegalStateException if the mappings cannot be applied to SDL
+     */
+    public static boolean addMappingsFromUtil() throws IOException, IllegalStateException, SDL_Error {
+        /*
+        Copy the file to a temp folder. SDL can't read files held in .jars, and that's probably how
+        most people would use this library.
+         */
+        File tempFile = SDL_GameControllerDB_Util.getSDL_GameControllerDB_TempFile();
+        int result = SDL.SDL_GameControllerAddMappingsFromFile(tempFile.getAbsolutePath());
+        if(!tempFile.delete()){
+            tempFile.deleteOnExit();
+        }
+        return (intToBoolean(result));
+    }
 
     /**
      * This method adds mappings held in the specified file. The file is copied to the temp folder so
