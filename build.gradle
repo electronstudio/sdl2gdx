@@ -33,8 +33,9 @@ repositories {
 
 dependencies {
     implementation "com.badlogicgames.gdx:gdx-jnigen:1.9.10"
-    api "com.badlogicgames.gdx:gdx:1.9.9"
-    api "com.badlogicgames.gdx:gdx-controllers:1.9.9"
+    api "com.badlogicgames.gdx:gdx:1.9.13"
+    api "com.badlogicgames.gdx-controllers:gdx-controllers-core:2.0.0"
+    api "com.badlogicgames.gdx-controllers:gdx-controllers-desktop:2.0.0"
 }
 
 task deleteJniFolder(type: Delete) {
@@ -79,16 +80,13 @@ task allNatives(dependsOn: classes, type: JavaExec) {
 }
 
 task uberjar(dependsOn: classes, type: Jar) {
-    from files(sourceSets.main.output.classesDir)
-    from files(sourceSets.main.output.resourcesDir)
-    //from {configurations.compile.collect {zipTree(it)}}
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
 
     manifest {
         attributes 'Main-Class': 'uk.co.electronstudio.sdl2gdx.tests.SDLTest'
     }
 }
-
-
 
 task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'

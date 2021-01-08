@@ -1,14 +1,15 @@
 package uk.co.electronstudio.sdl2gdx;
 
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.ControllerManager;
-import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntArray;
-import org.libsdl.*;
+import org.libsdl.SDL;
+import org.libsdl.SDL_Error;
+import org.libsdl.SDL_GameController;
+import org.libsdl.SDL_Joystick;
 
 import static uk.co.electronstudio.sdl2gdx.SDL2ControllerManager.InputPreference.*;
 
@@ -188,12 +189,6 @@ public class SDL2ControllerManager implements ControllerManager {
             } else {
                 listener.buttonUp(controller, buttonCode);
             }
-        }
-    }
-
-    void hatChanged(SDL2Controller controller, int hatCode, PovDirection value) {
-        for (ControllerListener listener : listeners) {
-            listener.povMoved(controller, hatCode, value);
         }
     }
 

@@ -5,6 +5,7 @@ jni/
 *.war
 *.ear
 hs_err_pid*
+.java-version
 
 ## GWT
 war/
