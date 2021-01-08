@@ -211,7 +211,6 @@ public class SDLTest {
                 });
 
                 pov.removeAll();
-                pov.add(new JLabel("HAT: "+c.getPov(0).toString()));
                 pov.add(new JLabel("POWER: "+c.getPowerLevel().toString()));
                 pov.add(new JLabel("TYPE: "+c.getType().toString()));
                 pov.add(new JLabel("INDEX: "+c.getPlayerIndex()));

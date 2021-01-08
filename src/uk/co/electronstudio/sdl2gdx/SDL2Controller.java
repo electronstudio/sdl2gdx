@@ -2,9 +2,12 @@ package uk.co.electronstudio.sdl2gdx;
 
 
 import com.badlogic.gdx.controllers.ControllerListener;
-import com.badlogic.gdx.controllers.PovDirection;
+import com.badlogic.gdx.controllers.ControllerMapping;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.IntMap;
+import com.studiohartman.jamepad.ControllerAxis;
+import com.studiohartman.jamepad.ControllerButton;
 import org.libsdl.SDL;
 import org.libsdl.SDL_Error;
 import org.libsdl.SDL_GameController;
@@ -15,14 +18,15 @@ import static org.libsdl.SDL.*;
 // TODO implement native SDL events.  Tried but they don't seem to work reliably on MacOS!
 
 public class SDL2Controller implements RumbleController {
+    private static final IntMap<ControllerButton> CODE_TO_BUTTON = new IntMap(ControllerButton.values().length);
+    private static final IntMap<ControllerAxis> CODE_TO_AXIS = new IntMap(ControllerAxis.values().length);
     final SDL2ControllerManager manager;
-    final Array<ControllerListener> listeners = new Array<ControllerListener>();
+    final Array<ControllerListener> listeners = new Array<>();
     final int device_index;
     public final SDL_Joystick joystick;
     final SDL_GameController controller;
     final float[] axisState;
     final boolean[] buttonState;
-    final PovDirection[] hatState;
     final static Vector3 zero = new Vector3(0, 0, 0);
 
 
@@ -32,7 +36,6 @@ public class SDL2Controller implements RumbleController {
 
         joystick = SDL_Joystick.JoystickOpen(device_index);
 
-        hatState = new PovDirection[joystick.numHats()];
 
         if (SDL.SDL_IsGameController(device_index)) {
             controller = SDL_GameController.GameControllerOpen(device_index);
@@ -52,7 +55,32 @@ public class SDL2Controller implements RumbleController {
     public boolean isConnected() {
         return joystick.getAttached();
     }
-//	public SDL2Controller(SDL2ControllerManager manager, SDL_Joystick joystick) {
+
+    @Override
+    public boolean canVibrate() {
+        return false;
+    }
+
+    @Override
+    public boolean isVibrating() {
+        return false;
+    }
+
+    @Override
+    public void startVibration(int duration, float strength) {
+
+    }
+
+    @Override
+    public void cancelVibration() {
+
+    }
+
+    @Override
+    public boolean supportsPlayerIndex() {
+        return false;
+    }
+    //	public SDL2Controller(SDL2ControllerManager manager, SDL_Joystick joystick) {
 //		this(manager, joystick, null);
 //	}
 //
@@ -124,16 +152,6 @@ public class SDL2Controller implements RumbleController {
             buttonState[i] = getButton(i);
         }
 
-        for (int i = 0; i < hatState.length; i++) {
-            if (hatState[i] != getPov(i)) {
-                hatState[i] = getPov(i);
-                for (ControllerListener listener : listeners) {
-                    listener.povMoved(this, i, getPov(i));
-                }
-                manager.hatChanged(this, i, getPov(i));
-            }
-        }
-
     }
 
     @Override
@@ -165,71 +183,36 @@ public class SDL2Controller implements RumbleController {
     }
 
     @Override
-    public PovDirection getPov(int povCode) {
-        if (controller != null) {
-            if (buttonState[SDL_CONTROLLER_BUTTON_DPAD_UP] && buttonState[SDL_CONTROLLER_BUTTON_DPAD_RIGHT])
-                return PovDirection.northEast;
-            else if (buttonState[SDL_CONTROLLER_BUTTON_DPAD_UP] && buttonState[SDL_CONTROLLER_BUTTON_DPAD_LEFT])
-                return PovDirection.northWest;
-            else if (buttonState[SDL_CONTROLLER_BUTTON_DPAD_DOWN] && buttonState[SDL_CONTROLLER_BUTTON_DPAD_RIGHT])
-                return PovDirection.southEast;
-            else if (buttonState[SDL_CONTROLLER_BUTTON_DPAD_DOWN] && buttonState[SDL_CONTROLLER_BUTTON_DPAD_LEFT])
-                return PovDirection.southWest;
-            else if (buttonState[SDL_CONTROLLER_BUTTON_DPAD_UP]) return PovDirection.north;
-            else if (buttonState[SDL_CONTROLLER_BUTTON_DPAD_RIGHT]) return PovDirection.east;
-            else if (buttonState[SDL_CONTROLLER_BUTTON_DPAD_DOWN]) return PovDirection.south;
-            else if (buttonState[SDL_CONTROLLER_BUTTON_DPAD_LEFT]) return PovDirection.west;
-            else return PovDirection.center;
-        } else if (joystick != null) {
-            switch (joystick.getHat(povCode)) {
-                case SDL_HAT_UP:
-                    return PovDirection.north;
-                case SDL_HAT_DOWN:
-                    return PovDirection.south;
-                case SDL_HAT_RIGHT:
-                    return PovDirection.east;
-                case SDL_HAT_LEFT:
-                    return PovDirection.west;
-                case SDL_HAT_RIGHTUP:
-                    return PovDirection.northEast;
-                case SDL_HAT_RIGHTDOWN:
-                    return PovDirection.southEast;
-                case SDL_HAT_LEFTUP:
-                    return PovDirection.northWest;
-                case SDL_HAT_LEFTDOWN:
-                    return PovDirection.southWest;
-                default:
-                    return PovDirection.center;
-            }
-        } else return PovDirection.center;
-    }
-
-    @Override
-    public boolean getSliderX(int sliderCode) {
-        return false;
-    }
-
-    @Override
-    public boolean getSliderY(int sliderCode) {
-        return false;
-    }
-
-    @Override
-    public Vector3 getAccelerometer(int accelerometerCode) {
-        return zero;
-    }
-
-    @Override
-    public void setAccelerometerSensitivity(float sensitivity) {
-    }
-
-    @Override
     public String getName() {
         if (controller != null) {
             return "SDL GameController " + controller.name();
         } else {
             return "SDL Joystick " + joystick.name();
         }
+    }
+
+    @Override
+    public String getUniqueId() {
+        if(controller != null) {
+            return controller.name();
+        } else {
+            return joystick.GUID();
+        }
+    }
+
+    @Override
+    public int getMinButtonIndex() {
+        return 0;
+    }
+
+    @Override
+    public int getMaxButtonIndex() {
+        return CODE_TO_BUTTON.size - 1;
+    }
+
+    @Override
+    public int getAxisCount() {
+        return CODE_TO_AXIS.size;
     }
 
     @Override
@@ -305,6 +288,15 @@ public class SDL2Controller implements RumbleController {
         return -1;
     }
 
+    @Override
+    public void setPlayerIndex(int index) {
+
+    }
+
+    @Override
+    public ControllerMapping getMapping() {
+        return null;
+    }
 
     public enum ControllerType {
         UNKNOWN, XBOX360, XBOXONE, PS3, PS4, NINTENDO_SWITCH_PRO, VIRTUAL
