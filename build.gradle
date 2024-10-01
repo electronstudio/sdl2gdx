@@ -31,7 +31,7 @@ repositories {
 }
 
 dependencies {
-    implementation "com.badlogicgames.gdx:gdx-jnigen:1.9.10"
+    compile "com.badlogicgames.gdx:gdx-jnigen:1.9.10"
     api "com.badlogicgames.gdx:gdx:1.9.9"
     api "com.badlogicgames.gdx:gdx-controllers:1.9.9"
 }
@@ -80,7 +80,7 @@ task allNatives(dependsOn: classes, type: JavaExec) {
 task uberjar(dependsOn: classes, type: Jar) {
     from files(sourceSets.main.output.classesDir)
     from files(sourceSets.main.output.resourcesDir)
-    //from {configurations.compile.collect {zipTree(it)}}
+    from {configurations.compile.collect {zipTree(it)}}
 
     manifest {
         attributes 'Main-Class': 'uk.co.electronstudio.sdl2gdx.tests.SDLTest'

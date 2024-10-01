@@ -55,7 +55,9 @@ class NativesBuild {
             lin64.cFlags = lin64.cFlags + " "  + cflags;
             lin64.cppFlags = lin64.cFlags;
             lin64.linkerFlags = "-shared -m64";
-            String libraries = execCmd("sdl2-config --static-libs").replace("-lSDL2","-l:libSDL2.a" );
+            String libraries = execCmd("sdl2-config --static-libs")
+                    .replace("-lSDL2","-l:libSDL2.a" )
+                    .replace("/usr/lib//libSDL2.a", "/usr/lib/x86_64-linux-gnu/libSDL2.a");
             //"-L/usr/local/lib -Wl,-rpath,/usr/local/lib -Wl,--enable-new-dtags -l:libSDL2.a -Wl,--no-undefined -lm -ldl -lsndio -lpthread -lrt";
             lin64.libraries = libraries;
         }
