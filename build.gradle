@@ -5,12 +5,11 @@ buildscript{
         jcenter()
     }
     dependencies{
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
+
     }
 }
 
 
-apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven-publish'
 
 
@@ -157,31 +156,3 @@ publishing {
     publish.dependsOn jar, sourcesJar, javadocJar//, generatePomFileForMavenPublicationPublication
 }
 
-String keyString = ''
-File file = new File(System.getProperty("user.home")+"/bintray.key")
-if(file.exists()){
-    keyString = file.text.trim()
-}
-
-bintray {
-    user = 'electronstudio' //System.getenv('BINTRAY_USER')
-    key = keyString //System.getenv('BINTRAY_KEY')
-    publications = ['mavenPublication']
-    publish = true
-    override = true
-    pkg {
-        repo = 'sdl2gdx'
-        name = 'sdl2gdx'
-        userOrg = 'electronstudio'
-        licenses = ["GPL-2.0+CE"]
-        vcsUrl = 'https://github.com/electronstudio/sdl2gdx.git'
-        version {
-            name = '1.0.4'
-            desc = '1.0.4'
-            released  = new Date()
-            vcsTag = '1.0.4'
-        }
-    }
-}
-
-bintrayUpload.dependsOn publish
